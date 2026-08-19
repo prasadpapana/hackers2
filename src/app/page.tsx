@@ -50,7 +50,11 @@ export default function LandingPage() {
                 Analyze a Document
               </Button>
             </Link>
-            <button className="px-8 py-3 text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors">
+            <button
+              type="button"
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-3 text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+            >
               How It Works
             </button>
           </div>
@@ -58,7 +62,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="bg-card border-t border-b border-border py-20">
+      <section id="how-it-works" className="bg-card border-t border-b border-border py-20 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-16">How It Works</h2>
           <div className="grid md:grid-cols-4 gap-8">
