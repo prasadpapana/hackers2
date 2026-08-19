@@ -14,6 +14,10 @@ interface AppStore {
   language: 'en' | 'te' | 'hi';
   setLanguage: (lang: 'en' | 'te' | 'hi') => void;
 
+  // Theme
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+
   // Documents
   documents: Document[];
   currentDocument: Document | null;
@@ -62,6 +66,7 @@ const initialState = {
   isAuthenticated: false,
   authLoading: 'idle' as LoadingState,
   language: 'en' as const,
+  theme: 'light' as const,
   documents: [],
   currentDocument: null,
   uploadState: {
@@ -89,6 +94,9 @@ export const useAppStore = create<AppStore>()(
 
       // Language
       setLanguage: (language) => set({ language }),
+
+      // Theme
+      setTheme: (theme) => set({ theme }),
 
       // Documents
       setDocuments: (documents) => set({ documents }),
@@ -151,6 +159,7 @@ export const useAppStore = create<AppStore>()(
       name: 'civic-guide-store',
       partialize: (state) => ({
         language: state.language,
+        theme: state.theme,
         sidebarOpen: state.sidebarOpen,
       }),
     }
