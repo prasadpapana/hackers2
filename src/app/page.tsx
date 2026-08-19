@@ -93,12 +93,20 @@ export default function LandingPage() {
             { icon: Globe, title: 'Multilingual', desc: 'Support for English, Telugu, and Hindi.' },
           ].map((item, idx) => {
             const Icon = item.icon;
-            return (
-              <div key={idx} className="p-6 border border-border rounded-lg bg-card hover:shadow-md transition-all">
+            const feature = (
+              <div className="p-6 border border-border rounded-lg bg-card hover:shadow-md transition-all">
                 <Icon className="w-8 h-8 text-primary mb-4" />
                 <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </div>
+            );
+
+            if (item.title === 'Multilingual') {
+              return <Link key={idx} href="/settings" aria-label="Open language settings">{feature}</Link>;
+            }
+
+            return (
+              <React.Fragment key={idx}>{feature}</React.Fragment>
             );
           })}
         </div>

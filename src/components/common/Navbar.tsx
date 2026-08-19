@@ -20,9 +20,11 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
   const router = useRouter();
   const t = useTranslations();
   const [showNotifications, setShowNotifications] = React.useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = React.useState(false);
 
   const handleLanguageChange = (lang: 'en' | 'te' | 'hi') => {
     setLanguage(lang);
+    setShowLanguageMenu(false);
   };
 
   const handleLogout = async () => {
@@ -53,12 +55,17 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
 
         <div className="flex items-center gap-4">
           {/* Language Selector */}
-          <div className="relative group">
-            <button className="flex items-center gap-2 text-foreground hover:bg-muted p-2 rounded-lg transition-colors">
+          <div className="relative">
+            <button
+              onClick={() => setShowLanguageMenu((current) => !current)}
+              aria-expanded={showLanguageMenu}
+              aria-haspopup="menu"
+              className="flex items-center gap-2 text-foreground hover:bg-muted p-2 rounded-lg transition-colors"
+            >
               <Globe className="w-4 h-4" />
               <span className="text-xs font-medium uppercase">{language}</span>
             </button>
-            <div className="absolute right-0 mt-2 w-32 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            {showLanguageMenu && <div className="absolute right-0 mt-2 w-32 bg-card border border-border rounded-lg shadow-lg" role="menu">
               {(['en', 'te', 'hi'] as const).map((lang) => (
                 <button
                   key={lang}
@@ -70,7 +77,7 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
                   {lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : 'हिन्दी'}
                 </button>
               ))}
-            </div>
+            </div>}
           </div>
 
           {/* Notifications */}
