@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Menu, X, LogOut, Settings, Bell, Globe, Home } from 'lucide-react';
+import { Menu, X, LogOut, Settings, Bell, Globe, Home, Sun, Moon } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Button } from './Button';
 import { useTranslations } from '@/lib/i18n';
@@ -15,12 +15,16 @@ interface NavbarProps {
 }
 
 export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
-  const { user, language, setLanguage, sidebarOpen, setSidebarOpen } = useAppStore();
+  const { user, language, setLanguage, theme, setTheme, sidebarOpen, setSidebarOpen } = useAppStore();
   const reset = useAppStore((state) => state.reset);
   const router = useRouter();
   const t = useTranslations();
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = React.useState(false);
+
+  React.useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   const handleLanguageChange = (lang: 'en' | 'te' | 'hi') => {
     setLanguage(lang);
@@ -64,6 +68,16 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="text-foreground hover:bg-muted p-2 rounded-lg transition-colors"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
+
           {/* Language Selector */}
           <div className="relative">
             <button
@@ -97,7 +111,6 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
             aria-label="Notifications"
           >
             <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
           </button>
 
           {/* User Menu */}
