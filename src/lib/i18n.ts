@@ -3,6 +3,7 @@
 import { useAppStore } from '@/lib/store';
 
 type TranslationKey =
+  | 'home'
   | 'dashboard'
   | 'myCases'
   | 'analyzeDocument'
@@ -14,6 +15,7 @@ type TranslationKey =
 
 const translations: Record<'en' | 'te' | 'hi', Record<TranslationKey, string>> = {
   en: {
+    home: 'Home',
     dashboard: 'Dashboard',
     myCases: 'My Cases',
     analyzeDocument: 'Analyze Document',
@@ -24,6 +26,7 @@ const translations: Record<'en' | 'te' | 'hi', Record<TranslationKey, string>> =
     logout: 'Logout',
   },
   te: {
+    home: 'హోమ్',
     dashboard: 'డాష్‌బోర్డ్',
     myCases: 'నా కేసులు',
     analyzeDocument: 'పత్రాన్ని విశ్లేషించండి',
@@ -34,6 +37,7 @@ const translations: Record<'en' | 'te' | 'hi', Record<TranslationKey, string>> =
     logout: 'లాగ్ అవుట్',
   },
   hi: {
+    home: 'होम',
     dashboard: 'डैशबोर्ड',
     myCases: 'मेरे मामले',
     analyzeDocument: 'दस्तावेज़ का विश्लेषण करें',

@@ -15,31 +15,32 @@ import { FileText, Download, Trash2, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import type { Document } from '@/types';
 
+type DocumentPreview = Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string };
+
+const mockDocuments: DocumentPreview[] = [
+  {
+    id: '1',
+    fileName: 'Application Form.pdf',
+    fileUrl: '#',
+    type: 'Application',
+    uploadedAt: '2024-08-18',
+    status: 'completed',
+  },
+  {
+    id: '2',
+    fileName: 'Income Certificate.pdf',
+    fileUrl: '#',
+    type: 'Certificate',
+    uploadedAt: '2024-08-17',
+    status: 'analyzing',
+  },
+];
+
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [documents, setDocuments] = useState<Array<Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string }>>([]);
-
-  const mockDocuments: Array<Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string }> = [
-    {
-      id: '1',
-      fileName: 'Application Form.pdf',
-      fileUrl: '#',
-      type: 'Application',
-      uploadedAt: '2024-08-18',
-      status: 'completed',
-    },
-    {
-      id: '2',
-      fileName: 'Income Certificate.pdf',
-      fileUrl: '#',
-      type: 'Certificate',
-      uploadedAt: '2024-08-17',
-      status: 'analyzing',
-    },
-  ];
+  const [documents, setDocuments] = useState<DocumentPreview[]>(mockDocuments);
 
   useEffect(() => {
-    setDocuments(mockDocuments);
     apiClient.getDocuments().then((response) => {
       if (response.data) setDocuments(response.data);
     }).catch(() => {

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import type { ApiResponse, Document, Analysis, CivicCase, User } from '@/types';
+import type { ApiResponse, Document, Analysis, CivicCase, TimelineEvent, User } from '@/types';
 
 class ApiClient {
   private client: AxiosInstance;
@@ -128,7 +128,7 @@ class ApiClient {
   }
 
   // Timeline
-  async getTimeline(caseId: string): Promise<ApiResponse<any[]>> {
+  async getTimeline(caseId: string): Promise<ApiResponse<TimelineEvent[]>> {
     const { data } = await this.client.get(`/cases/${caseId}/timeline`);
     return data;
   }

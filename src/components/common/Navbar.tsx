@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Menu, X, LogOut, Settings, Bell, Globe } from 'lucide-react';
+import { Menu, X, LogOut, Settings, Bell, Globe, Home } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Button } from './Button';
 import { useTranslations } from '@/lib/i18n';
@@ -48,9 +48,19 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-          <Link href="/dashboard" className="font-semibold text-lg text-primary">
-            CivicGuide AI
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/" className="font-semibold text-lg text-primary">
+              CivicGuide AI
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-1 text-sm text-foreground hover:bg-muted px-2 py-1 rounded-lg transition-colors"
+              aria-label="Home"
+            >
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('home')}</span>
+            </Link>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">

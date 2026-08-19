@@ -113,7 +113,7 @@ export default function CasesPage() {
             ].map((filter) => (
               <button
                 key={filter.value}
-                onClick={() => setFilterStatus(filter.value as any)}
+                onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
                 className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                   filterStatus === filter.value
                     ? 'bg-primary text-primary-foreground'

@@ -3,11 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileText, UploadCloud, FolderOpen, Calendar, Settings, HelpCircle } from 'lucide-react';
+import { Home, LayoutDashboard, FileText, UploadCloud, FolderOpen, Calendar, Settings, HelpCircle } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslations } from '@/lib/i18n';
 
 const mainNavItems = [
+  { href: '/', label: 'Home', icon: Home },
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/cases', label: 'My Cases', icon: FolderOpen },
   { href: '/analyze', label: 'Analyze Document', icon: UploadCloud },
@@ -24,7 +25,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { sidebarOpen } = useAppStore();
   const t = useTranslations();
-  const labels = [t('dashboard'), t('myCases'), t('analyzeDocument'), t('documents'), t('timeline')];
+  const labels = [t('home'), t('dashboard'), t('myCases'), t('analyzeDocument'), t('documents'), t('timeline')];
   const bottomLabels = [t('settings'), t('help')];
 
   if (!sidebarOpen) {
@@ -88,7 +89,7 @@ export function Sidebar() {
 export function MobileNavigation() {
   const pathname = usePathname();
   const t = useTranslations();
-  const labels = [t('dashboard'), t('myCases'), t('analyzeDocument'), t('documents')];
+  const labels = [t('home'), t('dashboard'), t('myCases'), t('analyzeDocument')];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-0 py-2 z-30 flex justify-around sm:hidden">

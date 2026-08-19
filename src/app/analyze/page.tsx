@@ -116,7 +116,7 @@ export default function AnalyzePage() {
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-2">Document Uploaded Successfully!</h3>
               <p className="text-muted-foreground mb-6">
-                Analyzing your document. You'll be redirected to results shortly...
+                Analyzing your document. You&apos;ll be redirected to results shortly...
               </p>
               <LoadingState />
             </CardContent>

@@ -40,14 +40,14 @@ type SpeechWindow = Window & {
 export function VoiceInput({ onSubmit }: VoiceInputProps) {
   const [status, setStatus] = useState<VoiceStatus>('idle');
   const [transcript, setTranscript] = useState('');
-  const [supported, setSupported] = useState(true);
+  const supported = typeof window === 'undefined'
+    ? true
+    : Boolean((window as SpeechWindow).SpeechRecognition ?? (window as SpeechWindow).webkitSpeechRecognition);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   useEffect(() => {
     const speechWindow = window as SpeechWindow;
     const Recognition = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
-    setSupported(Boolean(Recognition));
-
     if (!Recognition) return;
 
     const recognition = new Recognition();

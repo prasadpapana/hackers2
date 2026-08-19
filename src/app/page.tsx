@@ -85,12 +85,12 @@ export default function LandingPage() {
         <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-16">Features</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { icon: FileText, title: 'Document Analysis', desc: 'Upload notices, letters, applications, and more.' },
-            { icon: CheckCircle, title: 'Evidence Checklist', desc: 'Know exactly what documents you need.' },
-            { icon: Clock, title: 'Case Timeline', desc: 'Track important dates and deadlines.' },
-            { icon: Zap, title: 'Action Plan', desc: 'Get clear, step-by-step recommendations.' },
-            { icon: Users, title: 'Case Tracking', desc: 'Manage multiple cases in one place.' },
-            { icon: Globe, title: 'Multilingual', desc: 'Support for English, Telugu, and Hindi.' },
+            { icon: FileText, title: 'Document Analysis', desc: 'Upload notices, letters, applications, and more.', href: '/analyze' },
+            { icon: CheckCircle, title: 'Evidence Checklist', desc: 'Know exactly what documents you need.', href: '/analysis/preview' },
+            { icon: Clock, title: 'Case Timeline', desc: 'Track important dates and deadlines.', href: '/timeline' },
+            { icon: Zap, title: 'Action Plan', desc: 'Get clear, step-by-step recommendations.', href: '/analysis/preview' },
+            { icon: Users, title: 'Case Tracking', desc: 'Manage multiple cases in one place.', href: '/cases' },
+            { icon: Globe, title: 'Multilingual', desc: 'Support for English, Telugu, and Hindi.', href: '/settings' },
           ].map((item, idx) => {
             const Icon = item.icon;
             const feature = (
@@ -101,13 +101,7 @@ export default function LandingPage() {
               </div>
             );
 
-            if (item.title === 'Multilingual') {
-              return <Link key={idx} href="/settings" aria-label="Open language settings">{feature}</Link>;
-            }
-
-            return (
-              <React.Fragment key={idx}>{feature}</React.Fragment>
-            );
+            return <Link key={idx} href={item.href} aria-label={`Open ${item.title}`}>{feature}</Link>;
           })}
         </div>
       </section>
