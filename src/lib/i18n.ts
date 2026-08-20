@@ -2,6 +2,34 @@
 
 import { useAppStore } from '@/lib/store';
 
+export const indianLanguages = [
+  { value: 'en', label: 'English' },
+  { value: 'as', label: 'অসমীয়া' },
+  { value: 'bn', label: 'বাংলা' },
+  { value: 'brx', label: 'बड़ो' },
+  { value: 'doi', label: 'डोगरी' },
+  { value: 'gu', label: 'ગુજરાતી' },
+  { value: 'hi', label: 'हिन्दी' },
+  { value: 'kn', label: 'ಕನ್ನಡ' },
+  { value: 'ks', label: 'کٲشُر' },
+  { value: 'kok', label: 'कोंकणी' },
+  { value: 'mai', label: 'मैथिली' },
+  { value: 'ml', label: 'മലയാളം' },
+  { value: 'mni', label: 'মৈতৈলোন্' },
+  { value: 'mr', label: 'मराठी' },
+  { value: 'ne', label: 'नेपाली' },
+  { value: 'or', label: 'ଓଡ଼ିଆ' },
+  { value: 'pa', label: 'ਪੰਜਾਬੀ' },
+  { value: 'sa', label: 'संस्कृतम्' },
+  { value: 'sat', label: 'संताली' },
+  { value: 'sd', label: 'سنڌي' },
+  { value: 'ta', label: 'தமிழ்' },
+  { value: 'te', label: 'తెలుగు' },
+  { value: 'ur', label: 'اُردُو' },
+] as const;
+
+export type SupportedLanguage = typeof indianLanguages[number]['value'];
+
 type TranslationKey =
   | 'home'
   | 'dashboard'
@@ -13,7 +41,7 @@ type TranslationKey =
   | 'help'
   | 'logout';
 
-const translations: Record<'en' | 'te' | 'hi', Record<TranslationKey, string>> = {
+const translations: Partial<Record<SupportedLanguage, Record<TranslationKey, string>>> = {
   en: {
     home: 'Home',
     dashboard: 'Dashboard',
@@ -51,5 +79,5 @@ const translations: Record<'en' | 'te' | 'hi', Record<TranslationKey, string>> =
 
 export function useTranslations() {
   const language = useAppStore((state) => state.language);
-  return (key: TranslationKey) => translations[language][key];
+  return (key: TranslationKey) => (translations[language] ?? translations.en)?.[key] ?? key;
 }

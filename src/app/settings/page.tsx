@@ -15,6 +15,7 @@ import {
 import { Bell, Lock, Globe, User } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import { indianLanguages, type SupportedLanguage } from '@/lib/i18n';
 
 export default function SettingsPage() {
   const [language, setLanguage] = useState('en');
@@ -30,7 +31,7 @@ export default function SettingsPage() {
     setIsSaving(true);
     try {
       await apiClient.updateSettings(language);
-      setStoreLanguage(language as 'en' | 'te' | 'hi');
+      setStoreLanguage(language as SupportedLanguage);
       setIsSaving(false);
     } catch (error) {
       setIsSaving(false);
@@ -91,11 +92,7 @@ export default function SettingsPage() {
               label="Language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              options={[
-                { value: 'en', label: 'English' },
-                { value: 'te', label: 'Telugu (తెలుగు)' },
-                { value: 'hi', label: 'Hindi (हिन्दी)' },
-              ]}
+              options={indianLanguages.map((item) => ({ value: item.value, label: item.label }))}
             />
           </CardContent>
         </Card>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Menu, X, LogOut, Settings, Bell, Globe, Home, Sun, Moon } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Button } from './Button';
-import { useTranslations } from '@/lib/i18n';
+import { indianLanguages, type SupportedLanguage, useTranslations } from '@/lib/i18n';
 import { apiClient } from '@/lib/api';
 
 interface NavbarProps {
@@ -26,7 +26,7 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  const handleLanguageChange = (lang: 'en' | 'te' | 'hi') => {
+  const handleLanguageChange = (lang: SupportedLanguage) => {
     setLanguage(lang);
     setShowLanguageMenu(false);
   };
@@ -90,15 +90,15 @@ export function Navbar({ onMenuClick, showSearch = true }: NavbarProps) {
               <span className="text-xs font-medium uppercase">{language}</span>
             </button>
             {showLanguageMenu && <div className="absolute right-0 mt-2 w-32 bg-card border border-border rounded-lg shadow-lg" role="menu">
-              {(['en', 'te', 'hi'] as const).map((lang) => (
+              {indianLanguages.map((lang) => (
                 <button
-                  key={lang}
-                  onClick={() => handleLanguageChange(lang)}
+                  key={lang.value}
+                  onClick={() => handleLanguageChange(lang.value)}
                   className={`block w-full text-left px-4 py-2 text-sm ${
-                    language === lang ? 'bg-primary/10 text-primary font-medium' : 'text-foreground hover:bg-muted'
+                    language === lang.value ? 'bg-primary/10 text-primary font-medium' : 'text-foreground hover:bg-muted'
                   }`}
                 >
-                  {lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : 'हिन्दी'}
+                  {lang.label}
                 </button>
               ))}
             </div>}

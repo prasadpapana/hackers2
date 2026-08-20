@@ -1,9 +1,11 @@
+import type { SupportedLanguage } from '@/lib/i18n';
+
 // User and Authentication
 export interface User {
   id: string;
   name: string;
   email: string;
-  language: 'en' | 'te' | 'hi';
+  language: SupportedLanguage;
   createdAt: string;
 }
 

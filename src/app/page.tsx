@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/common';
+import { indianLanguages } from '@/lib/i18n';
+import { useAppStore } from '@/lib/store';
 import { 
   FileText, CheckCircle, Lock, Users, Zap, Globe, ArrowRight,
   Briefcase, Shield, Clock, MessageSquare
@@ -10,6 +12,8 @@ import {
 
 export default function LandingPage() {
   const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+  const language = useAppStore((state) => state.language);
+  const setLanguage = useAppStore((state) => state.setLanguage);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -36,7 +40,19 @@ export default function LandingPage() {
             <Briefcase className="w-6 h-6 text-primary" />
             <span className="font-semibold text-lg text-primary">CivicGuide AI</span>
           </div>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <label className="sr-only" htmlFor="landing-language">Choose language</label>
+            <select
+              id="landing-language"
+              value={language}
+              onChange={(event) => setLanguage(event.target.value as typeof language)}
+              className="max-w-28 rounded-lg border border-border bg-background px-2 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary sm:max-w-36"
+            >
+              {indianLanguages.map((item) => (
+                <option key={item.value} value={item.value}>{item.label}</option>
+              ))}
+            </select>
+            <div className="flex gap-2 sm:gap-4">
             <Link href="/login">
               <Button variant="ghost" size="md">
                 Login
@@ -47,6 +63,7 @@ export default function LandingPage() {
                 Get Started
               </Button>
             </Link>
+            </div>
           </div>
         </div>
       </nav>

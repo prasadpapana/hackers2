@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User, Document, Analysis, CivicCase, UploadState, LoadingState } from '@/types';
+import type { SupportedLanguage } from '@/lib/i18n';
 
 interface AppStore {
   // Auth
@@ -11,8 +12,8 @@ interface AppStore {
   setAuthLoading: (state: LoadingState) => void;
 
   // Language
-  language: 'en' | 'te' | 'hi';
-  setLanguage: (lang: 'en' | 'te' | 'hi') => void;
+  language: SupportedLanguage;
+  setLanguage: (lang: SupportedLanguage) => void;
 
   // Theme
   theme: 'light' | 'dark';
