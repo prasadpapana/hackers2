@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/common';
 import { 
@@ -9,6 +9,24 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
+  const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setVisibleSections((current) => ({ ...current, [entry.target.id]: true }));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
+  const revealClass = (id: string) => `landing-reveal ${visibleSections[id] ? 'landing-reveal-visible' : ''}`;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -35,7 +53,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32">
-        <div className="text-center space-y-6">
+          <div className="text-center space-y-6 landing-hero-enter">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
             Understand Your Rights.
             <br />
@@ -63,7 +81,7 @@ export default function LandingPage() {
 
       {/* How It Works */}
       <section id="how-it-works" className="bg-card border-t border-b border-border py-20 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div id="how-it-works-content" data-reveal className={`max-w-7xl mx-auto px-4 sm:px-6 ${revealClass('how-it-works-content')}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-16">How It Works</h2>
           <div className="grid md:grid-cols-4 gap-8">
             {[
@@ -86,6 +104,7 @@ export default function LandingPage() {
 
       {/* Features */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div id="features-content" data-reveal className={revealClass('features-content')}>
         <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-16">Features</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -98,7 +117,7 @@ export default function LandingPage() {
           ].map((item, idx) => {
             const Icon = item.icon;
             const feature = (
-              <div className="p-6 border border-border rounded-lg bg-card hover:shadow-md transition-all">
+              <div className="p-6 border border-border rounded-lg bg-card hover:-translate-y-1 hover:shadow-md transition-[transform,box-shadow,border-color] duration-200">
                 <Icon className="w-8 h-8 text-primary mb-4" />
                 <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
@@ -108,11 +127,12 @@ export default function LandingPage() {
             return <Link key={idx} href={item.href} aria-label={`Open ${item.title}`}>{feature}</Link>;
           })}
         </div>
+        </div>
       </section>
 
       {/* Why CivicGuide */}
       <section className="bg-card border-t border-border py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div id="why-content" data-reveal className={`max-w-7xl mx-auto px-4 sm:px-6 ${revealClass('why-content')}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-16">Why CivicGuide AI</h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
@@ -154,7 +174,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <section id="cta-content" data-reveal className={`max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center ${revealClass('cta-content')}`}>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
           Ready to understand your documents?
         </h2>

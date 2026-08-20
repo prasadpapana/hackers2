@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutDashboard, FileText, UploadCloud, FolderOpen, Calendar, Settings, HelpCircle } from 'lucide-react';
+import { Home, LayoutDashboard, FileText, UploadCloud, FolderOpen, Calendar, Settings, HelpCircle, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslations } from '@/lib/i18n';
 
@@ -33,8 +33,25 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-sidebar border-r border-sidebar-border overflow-y-auto z-30">
+    <>
+      <button
+        type="button"
+        aria-label="Close navigation"
+        onClick={() => useAppStore.getState().setSidebarOpen(false)}
+        className="fixed inset-0 top-16 z-20 bg-foreground/20 md:hidden"
+      />
+      <aside className="fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-64 max-w-[85vw] overflow-y-auto border-r border-sidebar-border bg-sidebar transition-transform duration-200 md:translate-x-0">
       <nav className="flex flex-col h-full p-4">
+        <div className="mb-3 flex justify-end md:hidden">
+          <button
+            type="button"
+            onClick={() => useAppStore.getState().setSidebarOpen(false)}
+            className="rounded-lg p-2 text-sidebar-foreground hover:bg-sidebar/80"
+            aria-label="Close navigation"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
         {/* Main Navigation */}
         <div className="flex-1 space-y-1">
           {mainNavItems.map((item, index) => {
@@ -81,7 +98,8 @@ export function Sidebar() {
           })}
         </div>
       </nav>
-    </aside>
+      </aside>
+    </>
   );
 }
 
@@ -92,7 +110,7 @@ export function MobileNavigation() {
   const labels = [t('home'), t('dashboard'), t('myCases'), t('analyzeDocument')];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-0 py-2 z-30 flex justify-around sm:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 flex justify-around border-t border-border bg-card px-0 py-2 sm:hidden">
       {mainNavItems.slice(0, 4).map((item, index) => {
         const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
         const Icon = item.icon;

@@ -35,7 +35,7 @@ export function Modal({ open, onClose, title, children, size = 'md', closeButton
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-background/50 backdrop-blur-sm" onClick={onClose}></div>
-      <div className={`relative bg-card border border-border rounded-lg shadow-lg ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
+      <div className={`relative mx-4 w-full bg-card border border-border rounded-lg shadow-lg ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
         {(title || closeButton) && (
           <div className="flex items-center justify-between p-6 border-b border-border">
             {title && <h2 className="text-lg font-semibold">{title}</h2>}
@@ -130,7 +130,7 @@ export function Toast({ message, type = 'info', onClose }: ToastProps) {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 px-4 py-3 rounded-lg border ${typeClasses[type]} shadow-lg animate-in slide-in-from-bottom-4 duration-300`}
+      className={`fixed bottom-20 right-4 z-50 max-w-[calc(100vw-2rem)] px-4 py-3 rounded-lg border ${typeClasses[type]} shadow-lg animate-in slide-in-from-bottom-4 duration-300 sm:bottom-4`}
     >
       {message}
     </div>

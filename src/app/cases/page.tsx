@@ -11,6 +11,8 @@ import {
   Badge,
   StatusBadge,
   EmptyState,
+  ErrorState,
+  LoadingState,
 } from '@/components/common';
 import { Search, Filter, Calendar, AlertCircle } from 'lucide-react';
 import type { CivicCase } from '@/types';
@@ -23,56 +25,18 @@ export default function CasesPage() {
   const storedCases = useAppStore((state) => state.cases);
   const setCases = useAppStore((state) => state.setCases);
 
-  const mockCases: Array<Pick<CivicCase, 'id' | 'title' | 'status' | 'progress' | 'lastUpdated' | 'nextAction' | 'deadline'>> = [
-    {
-      id: '1',
-      title: 'Consumer Complaint',
-      status: 'action_required',
-      progress: 70,
-      lastUpdated: '2 hours ago',
-      nextAction: 'Upload evidence',
-      deadline: '2024-09-15',
-    },
-    {
-      id: '2',
-      title: 'Property Dispute',
-      status: 'pending',
-      progress: 45,
-      lastUpdated: '1 day ago',
-      nextAction: 'Await review',
-      deadline: '2024-10-01',
-    },
-    {
-      id: '3',
-      title: 'Tenant Rights',
-      status: 'active',
-      progress: 85,
-      lastUpdated: '3 hours ago',
-      nextAction: 'Schedule meeting',
-      deadline: '2024-09-30',
-    },
-    {
-      id: '4',
-      title: 'Completed Case',
-      status: 'completed',
-      progress: 100,
-      lastUpdated: '1 week ago',
-      nextAction: 'View results',
-      deadline: '2024-08-25',
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let active = true;
     apiClient.getCases().then((response) => {
       if (active && response.data) setCases(response.data);
-    }).catch(() => {
-      // The preview dataset keeps the page usable before the API is available.
-    });
+    }).catch(() => setError(true)).finally(() => setLoading(false));
     return () => { active = false; };
   }, [setCases]);
 
-  const cases = storedCases.length > 0 ? storedCases : mockCases;
+  const cases = storedCases;
   const filteredCases = cases.filter((c) => {
     const matchesStatus = filterStatus === 'all' || c.status === filterStatus;
     const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -127,7 +91,7 @@ export default function CasesPage() {
         </div>
 
         {/* Cases Grid */}
-        {filteredCases.length > 0 ? (
+        {loading ? <LoadingState message="Loading cases..." /> : error ? <ErrorState title="Cases unavailable" message="We could not load your cases from the server." onRetry={() => window.location.reload()} /> : filteredCases.length > 0 ? (
           <div className="grid gap-6">
             {filteredCases.map((caseItem) => (
               <Link key={caseItem.id} href={`/cases/${caseItem.id}`}>

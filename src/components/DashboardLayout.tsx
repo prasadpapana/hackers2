@@ -16,7 +16,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className={`flex-1 overflow-y-auto transition-all ${sidebarOpen ? 'ml-64' : ''} md:ml-0 pb-16 md:pb-0`}>
+        <main className={`min-w-0 flex-1 overflow-y-auto transition-[margin] duration-200 pb-16 md:pb-0 ${sidebarOpen ? 'md:ml-64' : ''}`}>
           {children}
         </main>
       </div>

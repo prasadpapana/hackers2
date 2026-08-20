@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
@@ -13,47 +13,47 @@ import {
   Badge,
   StatusBadge,
   EmptyState,
+  ErrorState,
+  LoadingState,
 } from '@/components/common';
 import { AlertCircle, CheckCircle2, Calendar, FileText, Plus } from 'lucide-react';
 import type { CivicCase } from '@/types';
+import { apiClient } from '@/lib/api';
+import { useAppStore } from '@/lib/store';
 
 export default function DashboardPage() {
-  // TODO: Fetch real data from store/API
-  const mockCases: Array<Pick<CivicCase, 'id' | 'title' | 'status' | 'progress' | 'lastUpdated' | 'nextAction'>> = [
-    {
-      id: '1',
-      title: 'Consumer Complaint',
-      status: 'action_required',
-      progress: 70,
-      lastUpdated: '2 hours ago',
-      nextAction: 'Upload evidence',
-    },
-    {
-      id: '2',
-      title: 'Property Dispute',
-      status: 'pending',
-      progress: 45,
-      lastUpdated: '1 day ago',
-      nextAction: 'Await review',
-    },
-  ];
+  const cases = useAppStore((state) => state.cases);
+  const setCases = useAppStore((state) => state.setCases);
+  const user = useAppStore((state) => state.user);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    apiClient.getCases().then((response) => {
+      if (response.data) setCases(response.data);
+    }).catch(() => setError(true)).finally(() => setLoading(false));
+  }, [setCases]);
+
+  const activeCases = cases.filter((caseItem) => caseItem.status !== 'completed');
+  const actionRequired = cases.filter((caseItem) => caseItem.status === 'action_required');
+  const completedCases = cases.filter((caseItem) => caseItem.status === 'completed');
 
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, User</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, {user?.name ?? 'there'}</h1>
           <p className="text-muted-foreground">Manage your cases and documents in one place</p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
-            { label: 'Active Cases', value: '3', icon: FileText, color: 'text-primary' },
-            { label: 'Action Required', value: '2', icon: AlertCircle, color: 'text-amber-600' },
-            { label: 'Upcoming Deadlines', value: '1', icon: Calendar, color: 'text-amber-600' },
-            { label: 'Completed', value: '5', icon: CheckCircle2, color: 'text-green-600' },
+            { label: 'Active Cases', value: activeCases.length, icon: FileText, color: 'text-primary' },
+            { label: 'Action Required', value: actionRequired.length, icon: AlertCircle, color: 'text-amber-600' },
+            { label: 'Upcoming Deadlines', value: cases.filter((caseItem) => caseItem.deadline).length, icon: Calendar, color: 'text-amber-600' },
+            { label: 'Completed', value: completedCases.length, icon: CheckCircle2, color: 'text-green-600' },
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -85,9 +85,9 @@ export default function DashboardPage() {
               </Link>
             </div>
 
-            {mockCases.length > 0 ? (
+            {loading ? <LoadingState message="Loading cases..." /> : error ? <ErrorState title="Dashboard unavailable" message="We could not load your dashboard data from the server." onRetry={() => window.location.reload()} /> : cases.length > 0 ? (
               <div className="space-y-4">
-                {mockCases.map((caseItem) => (
+                {cases.slice(0, 3).map((caseItem) => (
                   <Card key={caseItem.id} hoverable>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between mb-4">

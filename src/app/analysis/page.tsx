@@ -11,6 +11,7 @@ import {
   CardTitle,
   Badge,
   StatusBadge,
+  EmptyState,
 } from '@/components/common';
 import { CheckCircle, AlertCircle, Clock, FileText, Download, Share2, ArrowRight } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
@@ -18,47 +19,14 @@ import { useAppStore } from '@/lib/store';
 export default function AnalysisResultPage() {
   const currentAnalysis = useAppStore((state) => state.currentAnalysis);
   const currentDocument = useAppStore((state) => state.currentDocument);
-  const previewAnalysis = {
-    decision: 'Likely Eligible',
-    confidence: 87,
-    status: 'completed',
-    explanation: 'Based on the document analysis, you appear to meet the initial eligibility criteria for this program. However, a formal determination requires additional documentation.',
-    recommendedAction: 'Submit the following missing documents to proceed with your application.',
-    missingEvidence: [
-      'Income Certificate',
-      'Address Proof',
-      'Identification Document',
-    ],
-    evidenceChecklist: [
-      { name: 'Application Form', status: 'verified' },
-      { name: 'Identity Proof', status: 'verified' },
-      { name: 'Address Proof', status: 'missing' },
-      { name: 'Income Certificate', status: 'missing' },
-      { name: 'Bank Statement', status: 'pending' },
-    ],
-    timeline: [
-      { title: 'Document uploaded', date: '18 Aug', status: 'completed' },
-      { title: 'Analysis completed', date: '18 Aug', status: 'completed' },
-      { title: 'Evidence required', date: '19 Aug', status: 'completed' },
-      { title: 'Application deadline', date: '15 Sep', status: 'pending' },
-      { title: 'Decision', date: 'TBD', status: 'pending' },
-    ],
-  };
-  const analysis = currentAnalysis
-    ? {
-        ...previewAnalysis,
-        decision: currentAnalysis.decision,
-        confidence: currentAnalysis.confidence,
-        status: currentAnalysis.status,
-        explanation: currentAnalysis.explanation,
-        recommendedAction: currentAnalysis.recommendedAction,
-        missingEvidence: currentAnalysis.missingEvidence ?? [],
-        evidenceChecklist: currentAnalysis.requiredEvidence?.map((evidence) => ({
-          name: evidence.name,
-          status: evidence.status,
-        })) ?? previewAnalysis.evidenceChecklist,
-      }
-    : previewAnalysis;
+  const analysis = currentAnalysis ? {
+    ...currentAnalysis,
+    missingEvidence: currentAnalysis.missingEvidence ?? [],
+    evidenceChecklist: currentAnalysis.requiredEvidence?.map((evidence) => ({
+      name: evidence.name,
+      status: evidence.status,
+    })) ?? [],
+  } : null;
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -72,6 +40,20 @@ export default function AnalysisResultPage() {
         return null;
     }
   };
+
+  if (!analysis) {
+    return (
+      <DashboardLayout>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+          <EmptyState
+            title="No analysis available"
+            message="Upload a document to generate an analysis result."
+            action={{ label: 'Upload Document', onClick: () => { window.location.href = '/analyze'; } }}
+          />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -195,28 +177,7 @@ export default function AnalysisResultPage() {
                 <CardTitle>TIMELINE</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-0">
-                  {analysis.timeline.map((event, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex gap-4 pb-6 ${idx !== analysis.timeline.length - 1 ? 'border-b border-border' : ''}`}
-                    >
-                      {event.status === 'completed' ? (
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                        </div>
-                      ) : (
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                          <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <p className="font-medium text-foreground">{event.title}</p>
-                        <p className="text-sm text-muted-foreground">{event.date}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-muted-foreground">Timeline events are available from the associated case.</p>
               </CardContent>
             </Card>
           </div>

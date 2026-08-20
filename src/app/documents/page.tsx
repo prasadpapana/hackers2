@@ -10,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
   EmptyState,
+  ErrorState,
+  LoadingState,
 } from '@/components/common';
 import { FileText, Download, Trash2, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -17,35 +19,16 @@ import type { Document } from '@/types';
 
 type DocumentPreview = Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string };
 
-const mockDocuments: DocumentPreview[] = [
-  {
-    id: '1',
-    fileName: 'Application Form.pdf',
-    fileUrl: '#',
-    type: 'Application',
-    uploadedAt: '2024-08-18',
-    status: 'completed',
-  },
-  {
-    id: '2',
-    fileName: 'Income Certificate.pdf',
-    fileUrl: '#',
-    type: 'Certificate',
-    uploadedAt: '2024-08-17',
-    status: 'analyzing',
-  },
-];
-
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [documents, setDocuments] = useState<DocumentPreview[]>(mockDocuments);
+  const [documents, setDocuments] = useState<DocumentPreview[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     apiClient.getDocuments().then((response) => {
       if (response.data) setDocuments(response.data);
-    }).catch(() => {
-      // Keep the preview data visible when the backend is unavailable.
-    });
+    }).catch(() => setError(true)).finally(() => setLoading(false));
   }, []);
 
   const visibleDocuments = documents.filter((document) =>
@@ -74,7 +57,7 @@ export default function DocumentsPage() {
         </div>
 
         {/* Documents List */}
-        {visibleDocuments.length > 0 ? (
+        {loading ? <LoadingState message="Loading documents..." /> : error ? <ErrorState title="Documents unavailable" message="We could not load your documents from the server." onRetry={() => window.location.reload()} /> : visibleDocuments.length > 0 ? (
           <div className="space-y-4">
             {visibleDocuments.map((doc) => (
               <Card key={doc.id} hoverable>
