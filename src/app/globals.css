@@ -218,3 +218,37 @@
     transition-duration: 1ms !important;
   }
 }
+
+/* Landing page visual system */
+.landing-page { font-family: var(--font-geist-sans), sans-serif; }
+.landing-grid { background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 56px 56px; }
+.landing-grid::after { position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 74% 34%, rgba(213,245,111,.12), transparent 24%), linear-gradient(180deg, rgba(7,16,24,.2), #071018 88%); content: ''; pointer-events: none; }
+.landing-glow { position: absolute; z-index: -1; height: 18rem; width: 18rem; border-radius: 999px; filter: blur(80px); opacity: .18; pointer-events: none; }
+.landing-glow-one { left: -10rem; top: 9rem; background: #d5f56f; }
+.landing-glow-two { right: -10rem; top: 26rem; background: #71b8a9; }
+.landing-reveal { opacity: 0; transform: translateY(24px); }
+.landing-reveal-visible { animation: landing-reveal 700ms cubic-bezier(.2,.75,.25,1) forwards; }
+.landing-button { transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.landing-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(213,245,111,.2); }
+.landing-button:active { transform: translateY(0) scale(.98); }
+.landing-hero-content > * { animation: landing-hero-enter 700ms cubic-bezier(.2,.75,.25,1) both; }
+.landing-delay-1 { animation-delay: 80ms !important; }
+.landing-delay-2 { animation-delay: 180ms !important; }
+.landing-delay-3 { animation-delay: 300ms !important; }
+.landing-delay-4 { animation-delay: 420ms !important; }
+.landing-visual { animation: landing-visual-in 900ms 220ms cubic-bezier(.2,.75,.25,1) both; }
+.landing-float-card { animation: landing-float 5s ease-in-out infinite; }
+.landing-float-card-delay { animation-delay: -2.2s; }
+.landing-orbit { position: absolute; border: 1px solid rgba(213,245,111,.18); border-radius: 999px; pointer-events: none; }
+.landing-orbit-one { inset: 8% -5% 8% 5%; transform: rotate(-13deg); }
+.landing-orbit-two { inset: -4% 14% 4% -14%; border-color: rgba(113,184,169,.15); transform: rotate(28deg); }
+.landing-trust-item { display: flex; align-items: center; gap: .75rem; border: 1px solid rgba(255,255,255,.1); border-radius: .75rem; background: rgba(255,255,255,.03); padding: 1rem; color: #dce5e1; font-size: .875rem; }
+.landing-feature-card { min-height: 18rem; border: 1px solid rgba(255,255,255,.1); border-radius: .875rem; background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018)); padding: 1.25rem; transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease; }
+.landing-feature-card:hover { transform: translateY(-6px); border-color: rgba(213,245,111,.42); background: linear-gradient(145deg, rgba(213,245,111,.1), rgba(255,255,255,.025)); box-shadow: 0 16px 42px rgba(0,0,0,.22), 0 0 28px rgba(213,245,111,.08); }
+.landing-step-line { position: absolute; left: 3.8rem; right: -3rem; top: 1.4rem; height: 1px; background: linear-gradient(90deg, rgba(213,245,111,.42), rgba(255,255,255,.08)); }
+.landing-cta { background: radial-gradient(circle at 50% 0%, rgba(213,245,111,.15), transparent 52%), #0d1b24; }
+.landing-cta-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 38px 38px; mask-image: linear-gradient(to bottom, black, transparent); }
+@keyframes landing-hero-enter { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes landing-reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes landing-visual-in { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes landing-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
