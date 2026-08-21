@@ -18,6 +18,7 @@ walk(sourceRoot);
 const source = sourceFiles.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
 const keys = new Set([...source.matchAll(/\bt\(['"]([^'"]+)['"]\)/g)].map((match) => match[1]));
 const i18n = fs.readFileSync(path.join(sourceRoot, 'lib', 'i18n.ts'), 'utf8');
+const benefitTable = i18n.match(/const benefitTranslations[\s\S]*?=\s*\{([\s\S]*?)\n\};/)?.[1] ?? '';
 const missingByLanguage = {};
 
 function keysIn(block) {
@@ -28,7 +29,8 @@ for (const language of languages) {
   const block = language === 'en'
     ? i18n.match(/\r?\n\s*en:\s*\{([\s\S]*?)\r?\n\s*\},\r?\n\s*te:/)?.[1] ?? ''
     : i18n.match(new RegExp(`\\r?\\n\\s*${language}:\\s*\\{([\\s\\S]*?)\\r?\\n\\s*\\},`))?.[1] ?? '';
-  const localeKeys = keysIn(block);
+  const benefitBlock = benefitTable.match(new RegExp(`\\r?\\n\\s*${language}:\\s*\\{([\\s\\S]*?)\\}`))?.[1] ?? '';
+  const localeKeys = new Set([...keysIn(block), ...keysIn(benefitBlock)]);
   const missing = [...keys].filter((key) => !localeKeys.has(key));
   if (missing.length) missingByLanguage[language] = missing;
 }

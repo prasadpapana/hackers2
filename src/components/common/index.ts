@@ -14,8 +14,10 @@ export { Badge, StatusBadge } from './Badge';
 
 export { LoadingState, ErrorState, EmptyState, SuccessState } from './States';
 
-export { Input, Textarea, Select } from './Forms';
+export { Input, Textarea, Select, Label } from './Forms';
 export type { InputProps, TextareaProps, SelectProps } from './Forms';
+
+export { Separator, Progress, Skeleton } from './Primitives';
 
 export { Modal, Alert, Toast } from './Modal';
 

@@ -14,6 +14,7 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
+  Progress,
 } from '@/components/common';
 import { AlertCircle, CheckCircle2, Calendar, FileText, Plus } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -105,12 +106,7 @@ export default function DashboardPage() {
                           <span className="text-xs text-muted-foreground">{t('progress')}</span>
                           <span className="text-xs font-medium text-foreground">{caseItem.progress}%</span>
                         </div>
-                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-primary rounded-full transition-all"
-                            style={{ width: `${caseItem.progress}%` }}
-                          ></div>
-                        </div>
+                        <Progress value={caseItem.progress} aria-label={`${t('progress')}: ${caseItem.progress}%`} />
                       </div>
 
                       {/* Next Action */}

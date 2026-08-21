@@ -2,6 +2,17 @@
 
 import React from 'react';
 
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
+  required?: boolean;
+}
+
+const Label = React.forwardRef<HTMLLabelElement, LabelProps>(({ className, required, children, ...props }, ref) => (
+  <label ref={ref} className={`text-sm font-medium leading-none text-foreground ${className || ''}`} {...props}>
+    {children}{required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}
+  </label>
+));
+Label.displayName = 'Label';
+
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -11,7 +22,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
-      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
+      {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
       <input
         ref={ref}
         className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
@@ -35,7 +46,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
-      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
+      {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
       <textarea
         ref={ref}
         className={`min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all resize-y ${
@@ -60,7 +71,7 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, hint, options = [], ...props }, ref) => (
     <div className="w-full">
-      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
+      {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
       <select
         ref={ref}
         className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
@@ -81,4 +92,4 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 );
 Select.displayName = 'Select';
 
-export { Input, Textarea, Select };
+export { Input, Textarea, Select, Label };

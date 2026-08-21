@@ -40,6 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       className={buttonVariants({ variant, size, className })}
       disabled={isLoading || disabled}
+      aria-busy={isLoading || undefined}
       ref={ref}
       {...props}
     >
