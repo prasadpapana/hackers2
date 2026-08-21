@@ -5,7 +5,7 @@ import { Check, ChevronDown, Globe, Search } from 'lucide-react';
 import { indianLanguages, type SupportedLanguage, useTranslations } from '@/lib/i18n';
 import { useAppStore } from '@/lib/store';
 
-export function LanguageSelector() {
+export function LanguageSelector({ compact = false }: { compact?: boolean }) {
   const language = useAppStore((state) => state.language);
   const setLanguage = useAppStore((state) => state.setLanguage);
   const t = useTranslations();
@@ -26,11 +26,12 @@ export function LanguageSelector() {
         onClick={() => setOpen((current) => !current)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex items-center gap-2 rounded-lg p-2 text-foreground transition-colors hover:bg-muted"
+        aria-label={compact ? t('language') : undefined}
+        className="language-selector-trigger flex min-h-10 items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-foreground shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/40"
         title={t('language')}
       >
         <Globe className="h-4 w-4" aria-hidden="true" />
-        <span className="max-w-24 truncate text-xs font-medium">{indianLanguages.find((item) => item.value === language)?.label}</span>
+        <span className={`${compact ? 'hidden' : 'max-w-24'} truncate text-xs font-medium sm:inline`}>{indianLanguages.find((item) => item.value === language)?.label}</span>
         <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
       </button>
       {open && (

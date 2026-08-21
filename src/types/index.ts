@@ -9,6 +9,34 @@ export interface User {
   createdAt: string;
 }
 
+export interface Review {
+  id: string;
+  userId: string;
+  user: { displayName: string; avatarUrl?: string };
+  rating: number;
+  reviewText: string;
+  category?: string;
+  createdAt: string;
+  updatedAt?: string;
+  verified: boolean;
+  helpfulCount: number;
+  helpfulByCurrentUser?: boolean;
+}
+
+export interface ReviewSummary {
+  averageRating: number;
+  totalReviews: number;
+  distribution: Record<1 | 2 | 3 | 4 | 5, number>;
+}
+
+export interface ReviewList {
+  reviews: Review[];
+  summary: ReviewSummary;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 // Document
 export interface Document {
   id: string;

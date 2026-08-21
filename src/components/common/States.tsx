@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertCircle, CheckCircle, Inbox } from 'lucide-react';
+import { AlertCircle, CheckCircle, Inbox, LoaderCircle } from 'lucide-react';
 
 interface LoadingStateProps {
   message?: string;
@@ -11,10 +11,7 @@ interface LoadingStateProps {
 export function LoadingState({ message = 'Loading...', fullScreen = false }: LoadingStateProps) {
   const content = (
     <div className="flex flex-col items-center justify-center gap-4 py-12">
-      <div className="relative w-12 h-12">
-        <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
-        <div className="absolute inset-0 rounded-full border-2 border-primary border-t-primary/20 animate-spin"></div>
-      </div>
+      <LoaderCircle className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
       {message && <p className="text-sm text-muted-foreground">{message}</p>}
     </div>
   );
@@ -38,8 +35,8 @@ interface ErrorStateProps {
 
 export function ErrorState({ title = 'Something went wrong', message = 'Please try again', onRetry }: ErrorStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
-      <AlertCircle className="w-12 h-12 text-destructive" />
+    <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-destructive/20 bg-destructive/5 px-6 py-12">
+      <AlertCircle className="h-10 w-10 text-destructive" aria-hidden="true" />
       <div className="text-center">
         <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
@@ -47,7 +44,7 @@ export function ErrorState({ title = 'Something went wrong', message = 'Please t
       {onRetry && (
         <button
           onClick={onRetry}
-          className="px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-md transition-colors"
+          className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Try Again
         </button>
@@ -73,8 +70,8 @@ export function EmptyState({
   action,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
-      {icon || <Inbox className="w-12 h-12 text-muted-foreground" />}
+    <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border px-6 py-12">
+      {icon || <Inbox className="h-10 w-10 text-muted-foreground" aria-hidden="true" />}
       <div className="text-center">
         <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
@@ -82,7 +79,7 @@ export function EmptyState({
       {action && (
         <button
           onClick={action.onClick}
-          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-md transition-colors"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {action.label}
         </button>
@@ -99,8 +96,8 @@ interface SuccessStateProps {
 
 export function SuccessState({ title = 'Success!', message = 'Operation completed', onClose }: SuccessStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
-      <CheckCircle className="w-12 h-12 text-green-600" />
+    <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-accent/30 bg-accent/10 px-6 py-12">
+      <CheckCircle className="h-10 w-10 text-accent-foreground" aria-hidden="true" />
       <div className="text-center">
         <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
@@ -108,7 +105,7 @@ export function SuccessState({ title = 'Success!', message = 'Operation complete
       {onClose && (
         <button
           onClick={onClose}
-          className="px-4 py-2 text-sm font-medium text-foreground hover:bg-muted rounded-md transition-colors"
+          className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Close
         </button>

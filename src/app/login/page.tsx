@@ -36,7 +36,7 @@ export default function LoginPage() {
       localStorage.setItem('authToken', token);
       setUser(user);
       router.push('/dashboard');
-    } catch (err) {
+    } catch {
       setError(t('invalidCredentials'));
     } finally {
       setIsLoading(false);
@@ -65,7 +65,7 @@ export default function LoginPage() {
             <Input
               label={t('email')}
               type="email"
-              placeholder="you@example.com"
+              placeholder={t('emailPlaceholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -100,7 +100,7 @@ export default function LoginPage() {
             </Button>
 
             <p className="text-center text-xs leading-5 text-muted-foreground">
-              By continuing, you agree to our <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and acknowledge our <Link href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+              {t('continuingAgreement')}{' '}<Link href="/terms" className="text-primary hover:underline">{t('termsOfService')}</Link>{' '}{t('andAcknowledge')}{' '}<Link href="/privacy-policy" className="text-primary hover:underline">{t('privacyPolicy')}</Link>.
             </p>
 
             <p className="text-center text-sm text-muted-foreground">

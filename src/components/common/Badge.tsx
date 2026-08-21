@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -9,20 +10,21 @@ interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ className, variant = 'default', size = 'sm', ...props }, ref) => {
   const variantClasses = {
-    default: 'bg-primary/10 text-primary border border-primary/20',
-    success: 'bg-green-100 text-green-800 border border-green-200',
-    warning: 'bg-amber-100 text-amber-800 border border-amber-200',
-    error: 'bg-red-100 text-red-800 border border-red-200',
-    info: 'bg-blue-100 text-blue-800 border border-blue-200',
+    default: 'border-primary/20 bg-primary/10 text-primary',
+    success: 'border-accent/30 bg-accent/10 text-accent-foreground',
+    warning: 'border-secondary/50 bg-secondary text-secondary-foreground',
+    error: 'border-destructive/20 bg-destructive/10 text-destructive',
+    info: 'border-primary/20 bg-primary/10 text-primary',
   };
 
   const sizeClasses = {
-    sm: 'text-xs px-2 py-1 rounded',
-    md: 'text-sm px-3 py-1.5 rounded-md',
+    sm: 'rounded-md px-2 py-0.5 text-xs',
+    md: 'rounded-md px-3 py-1 text-sm',
   };
 
   return (
     <div
+      role="status"
       ref={ref}
       className={`inline-flex items-center font-medium ${variantClasses[variant]} ${sizeClasses[size]} ${className || ''}`}
       {...props}
@@ -36,6 +38,7 @@ interface StatusBadgeProps extends Omit<BadgeProps, 'variant'> {
 }
 
 const StatusBadge = React.forwardRef<HTMLDivElement, StatusBadgeProps>(({ status, ...props }, ref) => {
+  const t = useTranslations();
   const statusMap = {
     active: 'success',
     completed: 'success',
@@ -47,17 +50,17 @@ const StatusBadge = React.forwardRef<HTMLDivElement, StatusBadgeProps>(({ status
   } as const;
 
   const statusLabels = {
-    active: 'Active',
-    completed: 'Completed',
-    pending: 'Pending',
-    error: 'Error',
-    warning: 'Warning',
-    review_required: 'Review Required',
-    action_required: 'Action Required',
+    active: t('statusActive'),
+    completed: t('statusCompleted'),
+    pending: t('statusPending'),
+    error: t('statusError'),
+    warning: t('statusWarning'),
+    review_required: t('statusReviewRequired'),
+    action_required: t('statusActionRequired'),
   };
 
   return (
-    <Badge ref={ref} variant={statusMap[status]} {...props}>
+    <Badge ref={ref} variant={statusMap[status]} {...props} aria-label={props['aria-label'] ?? statusLabels[status]}>
       {statusLabels[status]}
     </Badge>
   );

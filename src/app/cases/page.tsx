@@ -2,25 +2,24 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
   Button,
   Card,
   CardContent,
-  CardTitle,
-  Badge,
   StatusBadge,
   EmptyState,
   ErrorState,
   LoadingState,
 } from '@/components/common';
-import { Search, Filter, Calendar, AlertCircle } from 'lucide-react';
-import type { CivicCase } from '@/types';
+import { Search, Calendar } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useTranslations } from '@/lib/i18n';
 
 export default function CasesPage() {
+  const router = useRouter();
   const t = useTranslations();
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'action_required' | 'pending' | 'completed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -148,7 +147,7 @@ export default function CasesPage() {
             message={t('adjustFilters')}
             action={{
               label: t('createNewCase'),
-              onClick: () => (window.location.href = '/analyze'),
+              onClick: () => router.push('/analyze'),
             }}
           />
         )}

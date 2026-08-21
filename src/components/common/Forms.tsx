@@ -11,10 +11,10 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
-      {label && <label className="block text-sm font-medium text-foreground mb-2">{label}</label>}
+      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
       <input
         ref={ref}
-        className={`w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+        className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
           error ? 'border-destructive focus:ring-destructive' : ''
         } ${className || ''}`}
         {...props}
@@ -35,10 +35,10 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
-      {label && <label className="block text-sm font-medium text-foreground mb-2">{label}</label>}
+      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
       <textarea
         ref={ref}
-        className={`w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-vertical ${
+        className={`min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all resize-y ${
           error ? 'border-destructive focus:ring-destructive' : ''
         } ${className || ''}`}
         {...props}
@@ -60,10 +60,10 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, hint, options = [], ...props }, ref) => (
     <div className="w-full">
-      {label && <label className="block text-sm font-medium text-foreground mb-2">{label}</label>}
+      {label && <label htmlFor={props.id} className="mb-2 block text-sm font-medium text-foreground">{label}{props.required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}</label>}
       <select
         ref={ref}
-        className={`w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+        className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
           error ? 'border-destructive focus:ring-destructive' : ''
         } ${className || ''}`}
         {...props}

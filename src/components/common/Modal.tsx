@@ -35,16 +35,17 @@ export function Modal({ open, onClose, title, children, size = 'md', closeButton
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-background/50 backdrop-blur-sm" onClick={onClose}></div>
-      <div className={`relative mx-4 w-full bg-card border border-border rounded-lg shadow-lg ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby={title ? 'modal-title' : undefined}>
+      <button type="button" className="fixed inset-0 cursor-default bg-background/80 backdrop-blur-sm" onClick={onClose} aria-label={t('cancel')} />
+      <div className={`relative w-full rounded-lg border border-border bg-card shadow-lg ${sizeClasses[size]} max-h-[90dvh] overflow-y-auto`}>
         {(title || closeButton) && (
           <div className="flex items-center justify-between p-6 border-b border-border">
-            {title && <h2 className="text-lg font-semibold">{title}</h2>}
+            {title && <h2 id="modal-title" className="text-lg font-semibold">{title}</h2>}
             {closeButton && (
               <button
                 onClick={onClose}
-                className="text-muted-foreground hover:text-foreground transition-colors ml-auto"
+                type="button"
+                className="ml-auto rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={t('closeModal')}
               >
                 <X className="w-5 h-5" />
@@ -81,10 +82,10 @@ export function Alert({
 }: AlertProps) {
   const t = useTranslations();
   const typeClasses = {
-    info: 'text-blue-600',
-    warning: 'text-amber-600',
-    error: 'text-red-600',
-    success: 'text-green-600',
+    info: 'border-primary/20 bg-primary text-primary-foreground hover:bg-primary/90',
+    warning: 'border-secondary bg-secondary text-secondary-foreground hover:bg-secondary/80',
+    error: 'border-destructive/20 bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    success: 'border-accent bg-accent text-accent-foreground hover:bg-accent/90',
   };
 
   return (
@@ -103,7 +104,7 @@ export function Alert({
               onConfirm();
               onClose();
             }}
-            className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${typeClasses[type]} bg-${type}-100 hover:bg-${type}-200`}
+            className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${typeClasses[type]}`}
           >
             {confirmText ?? t('confirm')}
           </button>
@@ -126,9 +127,9 @@ export function Toast({ message, type = 'info', onClose }: ToastProps) {
   }, [onClose]);
 
   const typeClasses = {
-    success: 'bg-green-100 text-green-800 border-green-200',
-    error: 'bg-red-100 text-red-800 border-red-200',
-    info: 'bg-blue-100 text-blue-800 border-blue-200',
+    success: 'bg-accent/10 text-accent-foreground border-accent/30',
+    error: 'bg-destructive/10 text-destructive border-destructive/30',
+    info: 'bg-primary/10 text-primary border-primary/30',
   };
 
   return (

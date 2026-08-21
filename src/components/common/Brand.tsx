@@ -13,17 +13,13 @@ export function Brand({ href = '/', compact = false, inverted = false }: BrandPr
   const content = (
     <span className={`brand-lockup ${compact ? 'brand-lockup-compact' : ''} ${inverted ? 'brand-lockup-inverted' : ''}`}>
       <Image
-        src="/nyayg-sathi-emblem.png"
-        alt="NYAYG SATHI emblem"
+        src="/nyayg-sathi-logo.png"
+        alt="NYAYG SATHI"
         width={1024}
-        height={1120}
+        height={1536}
         priority
         className="brand-logo"
       />
-      <span className="brand-title" aria-label="NYAYG SATHI">
-        <span className="brand-title-nyayg">NYAYG</span>
-        <span className="brand-title-sathi">SATHI</span>
-      </span>
     </span>
   );
 

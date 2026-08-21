@@ -12,24 +12,19 @@ export default function HelpPage() {
 
   const faqs = [
     {
-      question: 'How do I upload a document?',
-      answer: 'Navigate to "Analyze Document" and either drag and drop your file or click to browse. We support PDF, JPG, and PNG files up to 10 MB.',
+      question: t('faqUploadQuestion'), answer: t('faqUploadAnswer'),
     },
     {
-      question: 'What document formats are supported?',
-      answer: 'We support PDF, JPG, and PNG formats. The maximum file size is 10 MB.',
+      question: t('faqFormatsQuestion'), answer: t('faqFormatsAnswer'),
     },
     {
-      question: 'How long does analysis take?',
-      answer: 'Most documents are analyzed within seconds. Complex documents may take up to a few minutes.',
+      question: t('faqTimeQuestion'), answer: t('faqTimeAnswer'),
     },
     {
-      question: 'Is my data secure?',
-      answer: 'Your documents are intended to remain private to your account and are protected by application safeguards. Do not upload unnecessary sensitive information, and review the Privacy Policy for how data may be processed for requested features.',
+      question: t('faqSecurityQuestion'), answer: t('faqSecurityAnswer'),
     },
     {
-      question: 'Can I export my analysis?',
-      answer: 'Yes, you can download your analysis results as a PDF from the analysis result page.',
+      question: t('faqExportQuestion'), answer: t('faqExportAnswer'),
     },
   ];
 

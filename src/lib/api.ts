@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import type { ApiResponse, Document, Analysis, CivicCase, TimelineEvent, User } from '@/types';
+import type { ApiResponse, Document, Analysis, CivicCase, TimelineEvent, User, Review, ReviewList } from '@/types';
 
 class ApiClient {
   private client: AxiosInstance;
@@ -29,7 +29,7 @@ class ApiClient {
         if (error.response?.status === 401) {
           if (typeof window !== 'undefined') {
             localStorage.removeItem('authToken');
-            window.location.href = '/login';
+            window.location.replace(`${window.location.origin}/login`);
           }
         }
         return Promise.reject(error);
@@ -136,6 +136,32 @@ class ApiClient {
   // Settings
   async updateSettings(language: string): Promise<ApiResponse<User>> {
     const { data } = await this.client.put('/settings', { language });
+    return data;
+  }
+
+  // The backend enforces authentication, moderation, ownership, and vote uniqueness.
+  async getReviews(params: { page?: number; pageSize?: number; rating?: number; search?: string; sort?: string } = {}): Promise<ApiResponse<ReviewList>> {
+    const { data } = await this.client.get('/reviews', { params });
+    return data;
+  }
+
+  async createReview(payload: { rating: number; reviewText: string; category?: string }): Promise<ApiResponse<Review>> {
+    const { data } = await this.client.post('/reviews', payload);
+    return data;
+  }
+
+  async updateReview(id: string, payload: { rating: number; reviewText: string; category?: string }): Promise<ApiResponse<Review>> {
+    const { data } = await this.client.put(`/reviews/${id}`, payload);
+    return data;
+  }
+
+  async deleteReview(id: string): Promise<ApiResponse<void>> {
+    const { data } = await this.client.delete(`/reviews/${id}`);
+    return data;
+  }
+
+  async markReviewHelpful(id: string): Promise<ApiResponse<{ helpfulCount: number; helpful: boolean }>> {
+    const { data } = await this.client.post(`/reviews/${id}/helpful`);
     return data;
   }
 

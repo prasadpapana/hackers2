@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   EmptyState,
   ErrorState,
   LoadingState,
@@ -21,6 +19,7 @@ import { useTranslations } from '@/lib/i18n';
 type DocumentPreview = Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string };
 
 export default function DocumentsPage() {
+  const router = useRouter();
   const t = useTranslations();
   const [searchQuery, setSearchQuery] = useState('');
   const [documents, setDocuments] = useState<DocumentPreview[]>([]);
@@ -108,7 +107,7 @@ export default function DocumentsPage() {
             message={t('startUploading')}
             action={{
               label: t('uploadDocument'),
-              onClick: () => (window.location.href = '/analyze'),
+              onClick: () => router.push('/analyze'),
             }}
           />
         )}

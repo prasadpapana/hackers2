@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   LoadingState,
@@ -19,6 +19,7 @@ import { useTranslations } from '@/lib/i18n';
 import { aiDisclaimer } from '@/components/common/LegalPage';
 
 export default function AnalyzePage() {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'analyzing' | 'success' | 'error'>('idle');
@@ -40,9 +41,7 @@ export default function AnalyzePage() {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && isValidFile(droppedFile)) {
-      setFile(droppedFile);
-    }
+    if (droppedFile && isValidFile(droppedFile)) setFile(droppedFile);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +76,7 @@ export default function AnalyzePage() {
       setUploadStatus('success');
 
       // Redirect to analysis result after success
-      setTimeout(() => { window.location.href = '/analysis'; }, 800);
+      setTimeout(() => router.push('/analysis'), 800);
     } catch (error) {
       setUploadStatus('error');
       console.error('Upload failed:', error);
@@ -151,7 +150,7 @@ export default function AnalyzePage() {
               <div className="space-y-6">
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
-                    {uploadStatus === 'uploading' ? 'Uploading...' : 'Analyzing document...'}
+                    {uploadStatus === 'uploading' ? t('uploading') : t('analyzingDocument')}
                   </p>
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div
@@ -180,7 +179,7 @@ export default function AnalyzePage() {
                   <h3 className="text-lg font-semibold text-foreground mb-2">
                     {t('dragDrop')}
                   </h3>
-                  <p className="text-muted-foreground mb-6">or</p>
+                  <p className="text-muted-foreground mb-6">{t('or')}</p>
 
                   <label>
                     <input
@@ -201,7 +200,7 @@ export default function AnalyzePage() {
                   </label>
 
                   <p className="text-xs text-muted-foreground mt-4">
-                    PDF, JPG, or PNG • Max 10 MB
+                    {t('supportedFileTypes')}
                   </p>
                 </CardContent>
                 <div
@@ -227,7 +226,7 @@ export default function AnalyzePage() {
                     <button
                       onClick={() => setFile(null)}
                       className="text-muted-foreground hover:text-foreground p-1"
-                      aria-label="Remove file"
+                      aria-label={t('removeFile')}
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -275,7 +274,7 @@ export default function AnalyzePage() {
                     <li>• PNG</li>
                   </ul>
                   <p className="text-xs text-muted-foreground mt-4">
-                    Maximum file size: 10 MB
+                    {t('maximumFileSize')}
                   </p>
                 </CardContent>
               </Card>

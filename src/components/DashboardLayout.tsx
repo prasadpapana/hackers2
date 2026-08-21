@@ -12,11 +12,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { sidebarOpen } = useAppStore();
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="dashboard-shell flex min-h-[100dvh] flex-col">
       <Navbar />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         <Sidebar />
-        <main className={`min-w-0 flex-1 overflow-y-auto transition-[margin] duration-200 pb-16 md:pb-0 ${sidebarOpen ? 'md:ml-64' : ''}`}>
+        <main className={`dashboard-main min-w-0 flex-1 overflow-y-auto pb-[calc(4.5rem+env(safe-area-inset-bottom))] transition-[margin] duration-200 md:pb-0 ${sidebarOpen ? 'md:ml-64' : ''}`}>
           {children}
         </main>
       </div>

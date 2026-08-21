@@ -2,27 +2,26 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
-  Badge,
   StatusBadge,
   EmptyState,
   ErrorState,
   LoadingState,
 } from '@/components/common';
 import { AlertCircle, CheckCircle2, Calendar, FileText, Plus } from 'lucide-react';
-import type { CivicCase } from '@/types';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useTranslations } from '@/lib/i18n';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const cases = useAppStore((state) => state.cases);
   const setCases = useAppStore((state) => state.setCases);
   const user = useAppStore((state) => state.user);
@@ -45,7 +44,7 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('welcomeBack')}, {user?.name ?? 'there'}</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('welcomeBack')}, {user?.name ?? t('there')}</h1>
           <p className="text-muted-foreground">{t('dashboardDescription')}</p>
         </div>
 
@@ -53,9 +52,9 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
             { label: t('activeCases'), value: activeCases.length, icon: FileText, color: 'text-primary' },
-            { label: t('actionRequired'), value: actionRequired.length, icon: AlertCircle, color: 'text-amber-600' },
-            { label: t('upcomingDeadlines'), value: cases.filter((caseItem) => caseItem.deadline).length, icon: Calendar, color: 'text-amber-600' },
-            { label: t('completed'), value: completedCases.length, icon: CheckCircle2, color: 'text-green-600' },
+            { label: t('actionRequired'), value: actionRequired.length, icon: AlertCircle, color: 'text-secondary-foreground' },
+            { label: t('upcomingDeadlines'), value: cases.filter((caseItem) => caseItem.deadline).length, icon: Calendar, color: 'text-secondary-foreground' },
+            { label: t('completed'), value: completedCases.length, icon: CheckCircle2, color: 'text-accent-foreground' },
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -133,10 +132,10 @@ export default function DashboardPage() {
             ) : (
               <EmptyState
                 title={t('noCases')}
-                message="Create your first case by uploading a document"
+                message={t('createFirstCase')}
                 action={{
                   label: t('uploadDocument'),
-                  onClick: () => window.location.href = '/analyze',
+                  onClick: () => router.push('/analyze'),
                 }}
               />
             )}
@@ -198,7 +197,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Check out our documentation or contact support
+                  {t('documentationOrSupport')}
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
                   {t('contactSupport')}

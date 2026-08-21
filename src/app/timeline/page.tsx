@@ -44,16 +44,11 @@ export default function TimelinePage() {
                       }`}
                     >
                       {/* Timeline dot */}
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 relative z-10"
-                        style={{
-                          borderColor: event.status === 'completed' ? 'rgb(34, 197, 94)' : 'rgb(203, 213, 225)',
-                          backgroundColor: event.status === 'completed' ? 'rgba(34, 197, 94, 0.05)' : 'transparent',
-                        }}
-                      >
+                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 relative z-10 ${event.status === 'completed' ? 'border-accent bg-accent/10' : 'border-border bg-background'}`}>
                         {event.status === 'completed' ? (
-                          <Check className="w-5 h-5 text-green-600" />
+                          <Check className="w-5 h-5 text-accent-foreground" />
                         ) : event.type === 'alert' ? (
-                          <AlertCircle className="w-5 h-5 text-amber-600" />
+                          <AlertCircle className="w-5 h-5 text-secondary-foreground" />
                         ) : (
                           <Calendar className="w-5 h-5 text-muted-foreground" />
                         )}
@@ -67,12 +62,7 @@ export default function TimelinePage() {
 
                       {/* Timeline line */}
                       {idx !== timeline.events.length - 1 && (
-                        <div
-                          className="absolute left-5 top-10 bottom-0 w-0.5 -z-0"
-                          style={{
-                            backgroundColor: event.status === 'completed' ? 'rgb(34, 197, 94)' : 'rgb(203, 213, 225)',
-                          }}
-                        ></div>
+                        <div className={`absolute left-5 top-10 bottom-0 w-0.5 -z-0 ${event.status === 'completed' ? 'bg-accent' : 'bg-border'}`}></div>
                       )}
                     </div>
                   ))}

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User, Document, Analysis, CivicCase, UploadState, LoadingState } from '@/types';
 import type { SupportedLanguage } from '@/lib/i18n';
+import type { ThemeName } from '@/lib/themes';
 
 interface AppStore {
   // Auth
@@ -17,8 +18,8 @@ interface AppStore {
   setLanguage: (lang: SupportedLanguage) => void;
 
   // Theme
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
 
   // Documents
   documents: Document[];
@@ -69,7 +70,7 @@ const initialState = {
   authLoading: 'idle' as LoadingState,
   language: 'en' as const,
   hasSelectedLanguage: false,
-  theme: 'light' as const,
+  theme: 'civic-blue' as const,
   documents: [],
   currentDocument: null,
   uploadState: {

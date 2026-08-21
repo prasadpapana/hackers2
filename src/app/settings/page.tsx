@@ -11,6 +11,7 @@ import {
   CardTitle,
   Input,
   Select,
+  ThemeSelector,
 } from '@/components/common';
 import { Bell, Lock, Globe, User } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -33,7 +34,7 @@ export default function SettingsPage() {
     try {
       await apiClient.updateSettings(storeLanguage);
       setIsSaving(false);
-    } catch (error) {
+    } catch {
       setIsSaving(false);
     }
   };
@@ -97,14 +98,24 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('theme')}</CardTitle>
+            <CardDescription>{t('themeDescription')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ThemeSelector />
+          </CardContent>
+        </Card>
+
         {/* Notification Settings */}
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
               <Bell className="w-5 h-5 text-primary" />
               <div>
-                <CardTitle>Notifications</CardTitle>
-                <CardDescription>Manage your notification preferences</CardDescription>
+                <CardTitle>{t('notificationsSettings')}</CardTitle>
+                <CardDescription>{t('notificationDescription')}</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -112,18 +123,18 @@ export default function SettingsPage() {
             {[
               {
                 key: 'caseUpdates',
-                label: 'Case Updates',
-                description: 'Notify me when there are updates on my cases',
+                label: t('caseUpdates'),
+                description: t('caseUpdatesDescription'),
               },
               {
                 key: 'deadlineReminders',
-                label: 'Deadline Reminders',
-                description: 'Notify me about upcoming deadlines',
+                label: t('deadlineReminders'),
+                description: t('deadlineRemindersDescription'),
               },
               {
                 key: 'newsAndUpdates',
-                label: 'News & Updates',
-                description: 'Receive news about NayaSathi features and updates',
+                label: t('newsAndUpdates'),
+                description: t('newsAndUpdatesDescription'),
               },
             ].map((setting) => (
               <div
@@ -156,29 +167,29 @@ export default function SettingsPage() {
             <div className="flex items-center gap-3">
               <Lock className="w-5 h-5 text-primary" />
               <div>
-                <CardTitle>Security</CardTitle>
-                <CardDescription>Manage your security settings</CardDescription>
+                <CardTitle>{t('security')}</CardTitle>
+                <CardDescription>{t('securityDescription')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="p-4 border border-border rounded-lg">
-              <h3 className="font-semibold text-foreground mb-2">Two-Factor Authentication</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t('twoFactorAuthentication')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Add an extra layer of security to your account
+                {t('extraSecurityLayer')}
               </p>
               <Button variant="outline" size="md">
-                Enable 2FA
+                {t('enableTwoFactor')}
               </Button>
             </div>
 
             <div className="p-4 border border-border rounded-lg">
-              <h3 className="font-semibold text-foreground mb-2">Active Sessions</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t('activeSessions')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Manage devices connected to your account
+                {t('manageConnectedDevices')}
               </p>
               <Button variant="outline" size="md">
-                View Sessions
+                {t('viewSessions')}
               </Button>
             </div>
           </CardContent>
@@ -187,26 +198,26 @@ export default function SettingsPage() {
         {/* Save Button */}
         <div className="flex gap-4 pt-6">
           <Button variant="primary" size="lg" isLoading={isSaving} onClick={handleSaveSettings}>
-            Save Changes
+            {t('saveChanges')}
           </Button>
           <Button variant="outline" size="lg">
-            Cancel
+            {t('cancel')}
           </Button>
         </div>
 
         {/* Danger Zone */}
         <Card className="border-destructive/20">
           <CardHeader>
-            <CardTitle className="text-destructive">Danger Zone</CardTitle>
+            <CardTitle className="text-destructive">{t('dangerZone')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-              <h3 className="font-semibold text-foreground mb-2">Delete Account</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t('deleteAccount')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Permanently delete your account and all associated data. This action cannot be undone.
+                {t('deleteAccountDescription')}
               </p>
               <Button variant="destructive" size="md">
-                Delete Account
+                {t('deleteAccount')}
               </Button>
             </div>
           </CardContent>

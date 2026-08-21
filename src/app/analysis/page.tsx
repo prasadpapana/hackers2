@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import {
   Button,
@@ -19,6 +20,7 @@ import { useTranslations } from '@/lib/i18n';
 import { aiDisclaimer } from '@/components/common/LegalPage';
 
 export default function AnalysisResultPage() {
+  const router = useRouter();
   const currentAnalysis = useAppStore((state) => state.currentAnalysis);
   const currentDocument = useAppStore((state) => state.currentDocument);
   const t = useTranslations();
@@ -51,7 +53,7 @@ export default function AnalysisResultPage() {
           <EmptyState
             title={t('noAnalysis')}
             message={t('analyzeDescription')}
-            action={{ label: t('uploadDocument'), onClick: () => { window.location.href = '/analyze'; } }}
+            action={{ label: t('uploadDocument'), onClick: () => router.push('/analyze') }}
           />
         </div>
       </DashboardLayout>
@@ -65,17 +67,17 @@ export default function AnalysisResultPage() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">{t('analysisResult')}</h1>
-            <p className="text-muted-foreground">{currentDocument?.fileName ?? 'Consumer Complaint - Application Form'}</p>
+            <p className="text-muted-foreground">{currentDocument?.fileName ?? t('defaultDocumentName')}</p>
             <p className="mt-4 max-w-3xl rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm leading-6 text-muted-foreground">{aiDisclaimer}</p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="md">
               <Download className="w-4 h-4" />
-              Download
+              {t('download')}
             </Button>
             <Button variant="outline" size="md">
               <Share2 className="w-4 h-4" />
-              Share
+              {t('share')}
             </Button>
           </div>
         </div>
@@ -120,7 +122,7 @@ export default function AnalysisResultPage() {
                 <div className="flex gap-4">
                   <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
                   <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-2">NEXT ACTION</h3>
+                    <h3 className="font-semibold text-foreground mb-2">{t('nextAction')}</h3>
                     <p className="text-foreground mb-4">{analysis.recommendedAction}</p>
                     <ul className="space-y-2">
                       {analysis.missingEvidence.map((item, idx) => (
@@ -181,7 +183,7 @@ export default function AnalysisResultPage() {
                 <CardTitle>{t('timeline')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Timeline events are available from the associated case.</p>
+                <p className="text-muted-foreground">{t('timelineAssociated')}</p>
               </CardContent>
             </Card>
           </div>
@@ -195,16 +197,16 @@ export default function AnalysisResultPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">STATUS</p>
+                  <p className="text-xs text-muted-foreground mb-1">{t('statusLabel')}</p>
                   <StatusBadge status="completed" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">MISSING DOCUMENTS</p>
+                  <p className="text-xs text-muted-foreground mb-2">{t('missingDocuments')}</p>
                   <p className="text-2xl font-bold text-foreground">{analysis.missingEvidence.length}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Required to proceed</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('requiredToProceed')}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">DEADLINE</p>
+                  <p className="text-xs text-muted-foreground mb-2">{t('deadline')}</p>
                   <p className="font-medium text-foreground">15 Sep 2024</p>
                 </div>
               </CardContent>
@@ -219,22 +221,22 @@ export default function AnalysisResultPage() {
                 <div className="flex gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Gather Documents</p>
-                    <p className="text-xs text-muted-foreground">Collect all missing evidence</p>
+                    <p className="font-medium text-foreground">{t('gatherDocuments')}</p>
+                    <p className="text-xs text-muted-foreground">{t('collectMissingEvidence')}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Submit Application</p>
-                    <p className="text-xs text-muted-foreground">Before deadline</p>
+                    <p className="font-medium text-foreground">{t('submitApplication')}</p>
+                    <p className="text-xs text-muted-foreground">{t('beforeDeadline')}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Track Progress</p>
-                    <p className="text-xs text-muted-foreground">Monitor status here</p>
+                    <p className="font-medium text-foreground">{t('trackProgress')}</p>
+                    <p className="text-xs text-muted-foreground">{t('monitorStatus')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -244,11 +246,11 @@ export default function AnalysisResultPage() {
             <Card>
               <CardContent className="pt-6 space-y-3">
                 <Button variant="primary" size="lg" className="w-full">
-                  Upload Documents
+                  {t('uploadDocuments')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
                 <Button variant="outline" size="lg" className="w-full">
-                  Create Case
+                  {t('createCase')}
                 </Button>
               </CardContent>
             </Card>
