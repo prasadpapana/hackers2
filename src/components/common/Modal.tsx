@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 interface ModalProps {
   open: boolean;
@@ -19,6 +20,7 @@ const sizeClasses = {
 };
 
 export function Modal({ open, onClose, title, children, size = 'md', closeButton = true }: ModalProps) {
+  const t = useTranslations();
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -43,7 +45,7 @@ export function Modal({ open, onClose, title, children, size = 'md', closeButton
               <button
                 onClick={onClose}
                 className="text-muted-foreground hover:text-foreground transition-colors ml-auto"
-                aria-label="Close modal"
+                aria-label={t('closeModal')}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -72,11 +74,12 @@ export function Alert({
   onClose,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   onConfirm,
   type = 'info',
 }: AlertProps) {
+  const t = useTranslations();
   const typeClasses = {
     info: 'text-blue-600',
     warning: 'text-amber-600',
@@ -93,7 +96,7 @@ export function Alert({
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-foreground bg-muted hover:bg-muted/80 rounded-md transition-colors"
           >
-            {cancelText}
+            {cancelText ?? t('cancel')}
           </button>
           <button
             onClick={() => {
@@ -102,7 +105,7 @@ export function Alert({
             }}
             className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${typeClasses[type]} bg-${type}-100 hover:bg-${type}-200`}
           >
-            {confirmText}
+            {confirmText ?? t('confirm')}
           </button>
         </div>
       </div>

@@ -15,10 +15,13 @@ import {
 } from '@/components/common';
 import { CheckCircle, AlertCircle, Clock, FileText, Download, Share2, ArrowRight } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import { useTranslations } from '@/lib/i18n';
+import { aiDisclaimer } from '@/components/common/LegalPage';
 
 export default function AnalysisResultPage() {
   const currentAnalysis = useAppStore((state) => state.currentAnalysis);
   const currentDocument = useAppStore((state) => state.currentDocument);
+  const t = useTranslations();
   const analysis = currentAnalysis ? {
     ...currentAnalysis,
     missingEvidence: currentAnalysis.missingEvidence ?? [],
@@ -46,9 +49,9 @@ export default function AnalysisResultPage() {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
           <EmptyState
-            title="No analysis available"
-            message="Upload a document to generate an analysis result."
-            action={{ label: 'Upload Document', onClick: () => { window.location.href = '/analyze'; } }}
+            title={t('noAnalysis')}
+            message={t('analyzeDescription')}
+            action={{ label: t('uploadDocument'), onClick: () => { window.location.href = '/analyze'; } }}
           />
         </div>
       </DashboardLayout>
@@ -61,8 +64,9 @@ export default function AnalysisResultPage() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Analysis Result</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">{t('analysisResult')}</h1>
             <p className="text-muted-foreground">{currentDocument?.fileName ?? 'Consumer Complaint - Application Form'}</p>
+            <p className="mt-4 max-w-3xl rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm leading-6 text-muted-foreground">{aiDisclaimer}</p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="md">
@@ -84,11 +88,11 @@ export default function AnalysisResultPage() {
               <CardContent className="pt-6">
                 <div className="space-y-6">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">DECISION</p>
+                    <p className="text-sm text-muted-foreground mb-2">{t('decision')}</p>
                     <h2 className="text-3xl font-bold text-primary mb-4">{analysis.decision}</h2>
                     <div className="flex items-center gap-4">
                       <div>
-                        <p className="text-xs text-muted-foreground mb-1">CONFIDENCE LEVEL</p>
+                        <p className="text-xs text-muted-foreground mb-1">{t('confidenceLevel')}</p>
                         <p className="text-2xl font-bold text-foreground">{analysis.confidence}%</p>
                       </div>
                       <div className="flex-1">
@@ -103,7 +107,7 @@ export default function AnalysisResultPage() {
                   </div>
 
                   <div className="border-t border-primary/20 pt-6">
-                    <h3 className="font-semibold text-foreground mb-3">WHAT THIS MEANS</h3>
+                    <h3 className="font-semibold text-foreground mb-3">{t('whatThisMeans')}</h3>
                     <p className="text-foreground leading-relaxed">{analysis.explanation}</p>
                   </div>
                 </div>
@@ -134,9 +138,9 @@ export default function AnalysisResultPage() {
             {/* Evidence Checklist */}
             <Card>
               <CardHeader>
-                <CardTitle>EVIDENCE CHECKLIST</CardTitle>
+                <CardTitle>{t('evidenceChecklist')}</CardTitle>
                 <CardDescription>
-                  Required and supporting documents for your application
+                  {t('requiredDocuments')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -174,7 +178,7 @@ export default function AnalysisResultPage() {
             {/* Timeline */}
             <Card>
               <CardHeader>
-                <CardTitle>TIMELINE</CardTitle>
+                <CardTitle>{t('timeline')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Timeline events are available from the associated case.</p>
@@ -187,7 +191,7 @@ export default function AnalysisResultPage() {
             {/* Summary */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Summary</CardTitle>
+                <CardTitle className="text-base">{t('summary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -209,7 +213,7 @@ export default function AnalysisResultPage() {
             {/* Recommendations */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Recommendations</CardTitle>
+                <CardTitle className="text-base">{t('recommendations')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex gap-3">

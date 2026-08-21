@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common';
-import { Briefcase } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import { Brand } from '@/components/common/Brand';
+import { useTranslations } from '@/lib/i18n';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const t = useTranslations();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,12 +27,12 @@ export default function SignupPage() {
     setPasswordError('');
 
     if (password !== confirmPassword) {
-      setPasswordError('Passwords do not match');
+      setPasswordError(t('passwordMismatch'));
       return;
     }
 
     if (password.length < 8) {
-      setPasswordError('Password must be at least 8 characters');
+      setPasswordError(t('passwordLength'));
       return;
     }
 
@@ -49,7 +51,7 @@ export default function SignupPage() {
       setUser(user);
       router.push('/dashboard');
     } catch (err) {
-      setError('Failed to create account. Please try again.');
+      setError(t('accountCreateFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -59,13 +61,10 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Briefcase className="w-6 h-6 text-primary" />
-            <span className="text-xl font-semibold text-primary">CivicGuide AI</span>
-          </div>
-          <CardTitle className="text-center">Create Account</CardTitle>
+          <div className="flex items-center justify-center mb-4"><Brand /></div>
+          <CardTitle className="text-center">{t('getStarted')}</CardTitle>
           <CardDescription className="text-center">
-            Join thousands using CivicGuide AI
+            {t('signupDescription')}
           </CardDescription>
         </CardHeader>
 
@@ -78,7 +77,7 @@ export default function SignupPage() {
             )}
 
             <Input
-              label="Full Name"
+              label={t('fullName')}
               type="text"
               placeholder="John Doe"
               value={name}
@@ -87,7 +86,7 @@ export default function SignupPage() {
             />
 
             <Input
-              label="Email"
+              label={t('email')}
               type="email"
               placeholder="you@example.com"
               value={email}
@@ -96,17 +95,17 @@ export default function SignupPage() {
             />
 
             <Input
-              label="Password"
+              label={t('password')}
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              hint="At least 8 characters"
+              hint={t('atLeastEight')}
               required
             />
 
             <Input
-              label="Confirm Password"
+              label={t('confirmPassword')}
               type="password"
               placeholder="••••••••"
               value={confirmPassword}
@@ -117,17 +116,21 @@ export default function SignupPage() {
 
             <div className="flex items-start gap-2 text-xs text-muted-foreground">
               <input type="checkbox" className="w-4 h-4 border border-border rounded mt-0.5" required />
-              <span>I agree to the Terms of Service and Privacy Policy</span>
+              <span>{t('agreeTerms')}</span>
             </div>
 
             <Button variant="primary" size="lg" className="w-full" isLoading={isLoading}>
-              Create Account
+              {t('createAccount')}
             </Button>
 
+            <p className="text-center text-xs leading-5 text-muted-foreground">
+              By continuing, you agree to our <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and acknowledge our <Link href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+            </p>
+
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
+              {t('haveAccount')}{' '}
               <Link href="/login" className="text-primary hover:underline font-medium">
-                Sign in
+                {t('signIn')}
               </Link>
             </p>
           </form>

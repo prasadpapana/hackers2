@@ -4,18 +4,16 @@ import React from 'react';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/common';
 import { Calendar, Check, AlertCircle } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 export default function TimelinePage() {
+  const t = useTranslations();
   const mockTimelines = [
     {
       id: '1',
-      title: 'Consumer Complaint',
+      title: t('consumerComplaint'),
       events: [
-        { title: 'Document uploaded', date: '18 Aug 2024', status: 'completed', type: 'upload' },
-        { title: 'Analysis completed', date: '18 Aug 2024', status: 'completed', type: 'analysis' },
-        { title: 'Evidence required', date: '19 Aug 2024', status: 'completed', type: 'alert' },
-        { title: 'Application deadline', date: '15 Sep 2024', status: 'pending', type: 'deadline' },
-        { title: 'Decision', date: 'TBD', status: 'pending', type: 'decision' },
+        { title: t('documentUploaded'), date: '18 Aug 2024', status: 'completed', type: 'upload' }, { title: t('analysisCompleted'), date: '18 Aug 2024', status: 'completed', type: 'analysis' }, { title: t('evidenceRequired'), date: '19 Aug 2024', status: 'completed', type: 'alert' }, { title: t('applicationDeadline'), date: '15 Sep 2024', status: 'pending', type: 'deadline' }, { title: t('decisionPending'), date: 'TBD', status: 'pending', type: 'decision' },
       ],
     },
   ];
@@ -25,8 +23,8 @@ export default function TimelinePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Timeline</h1>
-          <p className="text-muted-foreground">Track important dates and events across all your cases</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('timeline')}</h1>
+          <p className="text-muted-foreground">{t('timelineDescription')}</p>
         </div>
 
         {/* Timelines */}

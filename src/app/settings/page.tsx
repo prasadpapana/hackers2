@@ -15,10 +15,10 @@ import {
 import { Bell, Lock, Globe, User } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
-import { indianLanguages, type SupportedLanguage } from '@/lib/i18n';
+import { indianLanguages, type SupportedLanguage, useTranslations } from '@/lib/i18n';
 
 export default function SettingsPage() {
-  const [language, setLanguage] = useState('en');
+  const storeLanguage = useAppStore((state) => state.language);
   const [notifications, setNotifications] = useState({
     caseUpdates: true,
     deadlineReminders: true,
@@ -26,12 +26,12 @@ export default function SettingsPage() {
   });
   const [isSaving, setIsSaving] = useState(false);
   const setStoreLanguage = useAppStore((state) => state.setLanguage);
+  const t = useTranslations();
 
   const handleSaveSettings = async () => {
     setIsSaving(true);
     try {
-      await apiClient.updateSettings(language);
-      setStoreLanguage(language as SupportedLanguage);
+      await apiClient.updateSettings(storeLanguage);
       setIsSaving(false);
     } catch (error) {
       setIsSaving(false);
@@ -43,8 +43,8 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
-          <p className="text-muted-foreground">Manage your account and preferences</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('settings')}</h1>
+          <p className="text-muted-foreground">{t('settingsDescription')}</p>
         </div>
 
         {/* Account Settings */}
@@ -53,23 +53,23 @@ export default function SettingsPage() {
             <div className="flex items-center gap-3">
               <User className="w-5 h-5 text-primary" />
               <div>
-                <CardTitle>Account Settings</CardTitle>
-                <CardDescription>Manage your account information</CardDescription>
+                <CardTitle>{t('accountSettings')}</CardTitle>
+                <CardDescription>{t('accountDescription')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            <Input label="Full Name" defaultValue="John Doe" />
-            <Input label="Email" type="email" defaultValue="john@example.com" />
+            <Input label={t('fullName')} defaultValue="John Doe" />
+            <Input label={t('email')} type="email" defaultValue="john@example.com" />
 
             <div className="pt-4 border-t border-border">
-              <h3 className="font-semibold text-foreground mb-4">Change Password</h3>
+              <h3 className="font-semibold text-foreground mb-4">{t('changePassword')}</h3>
               <div className="space-y-4">
-                <Input label="Current Password" type="password" />
-                <Input label="New Password" type="password" />
-                <Input label="Confirm New Password" type="password" />
+                <Input label={t('currentPassword')} type="password" />
+                <Input label={t('newPassword')} type="password" />
+                <Input label={t('confirmPassword')} type="password" />
                 <Button variant="outline" size="md">
-                  Update Password
+                  {t('updatePassword')}
                 </Button>
               </div>
             </div>
@@ -82,16 +82,16 @@ export default function SettingsPage() {
             <div className="flex items-center gap-3">
               <Globe className="w-5 h-5 text-primary" />
               <div>
-                <CardTitle>Language & Region</CardTitle>
-                <CardDescription>Choose your preferred language</CardDescription>
+                <CardTitle>{t('languageRegion')}</CardTitle>
+                <CardDescription>{t('preferredLanguage')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <Select
-              label="Language"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              label={t('language')}
+              value={storeLanguage}
+              onChange={(e) => setStoreLanguage(e.target.value as SupportedLanguage)}
               options={indianLanguages.map((item) => ({ value: item.value, label: item.label }))}
             />
           </CardContent>
@@ -123,7 +123,7 @@ export default function SettingsPage() {
               {
                 key: 'newsAndUpdates',
                 label: 'News & Updates',
-                description: 'Receive news about CivicGuide AI features and updates',
+                description: 'Receive news about NayaSathi features and updates',
               },
             ].map((setting) => (
               <div

@@ -4,8 +4,10 @@ import React from 'react';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, Button } from '@/components/common';
 import { ChevronDown, Mail, MessageSquare } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 export default function HelpPage() {
+  const t = useTranslations();
   const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
 
   const faqs = [
@@ -23,7 +25,7 @@ export default function HelpPage() {
     },
     {
       question: 'Is my data secure?',
-      answer: 'Yes, all your documents are encrypted and stored securely. We never share your data with third parties without your consent.',
+      answer: 'Your documents are intended to remain private to your account and are protected by application safeguards. Do not upload unnecessary sensitive information, and review the Privacy Policy for how data may be processed for requested features.',
     },
     {
       question: 'Can I export my analysis?',
@@ -36,8 +38,8 @@ export default function HelpPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Help & Support</h1>
-          <p className="text-muted-foreground">Find answers to common questions or contact our support team</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('helpSupport')}</h1>
+          <p className="text-muted-foreground">{t('helpDescription')}</p>
         </div>
 
         {/* Contact Options */}
@@ -45,12 +47,12 @@ export default function HelpPage() {
           <Card>
             <CardContent className="pt-6 text-center">
               <Mail className="w-8 h-8 text-primary mx-auto mb-4" />
-              <h3 className="font-semibold text-foreground mb-2">Email Support</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t('emailSupport')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Get help from our support team
+                {t('supportHelp')}
               </p>
               <Button variant="primary" size="md">
-                support@civicguide.ai
+                support@nayasathi.ai
               </Button>
             </CardContent>
           </Card>
@@ -58,12 +60,12 @@ export default function HelpPage() {
           <Card>
             <CardContent className="pt-6 text-center">
               <MessageSquare className="w-8 h-8 text-primary mx-auto mb-4" />
-              <h3 className="font-semibold text-foreground mb-2">Live Chat</h3>
+              <h3 className="font-semibold text-foreground mb-2">{t('liveChat')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Chat with our support team
+                {t('chatSupport')}
               </p>
               <Button variant="primary" size="md">
-                Open Chat
+                {t('openChat')}
               </Button>
             </CardContent>
           </Card>
@@ -71,7 +73,7 @@ export default function HelpPage() {
 
         {/* FAQ */}
         <div>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">{t('faq')}</h2>
           <div className="space-y-3">
             {faqs.map((faq, idx) => (
               <Card
@@ -100,14 +102,14 @@ export default function HelpPage() {
         {/* Documentation */}
         <Card>
           <CardHeader>
-            <CardTitle>Need More Help?</CardTitle>
+            <CardTitle>{t('needMoreHelp')}</CardTitle>
             <CardDescription>
-              Check out our full documentation
+              {t('documentationDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button variant="outline" size="md">
-              Read Documentation
+              {t('readDocumentation')}
             </Button>
           </CardContent>
         </Card>

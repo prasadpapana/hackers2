@@ -36,7 +36,7 @@ export function Sidebar() {
     <>
       <button
         type="button"
-        aria-label="Close navigation"
+        aria-label={t('closeNavigation')}
         onClick={() => useAppStore.getState().setSidebarOpen(false)}
         className="fixed inset-0 top-16 z-20 bg-foreground/20 md:hidden"
       />
@@ -47,7 +47,7 @@ export function Sidebar() {
             type="button"
             onClick={() => useAppStore.getState().setSidebarOpen(false)}
             className="rounded-lg p-2 text-sidebar-foreground hover:bg-sidebar/80"
-            aria-label="Close navigation"
+            aria-label={t('closeNavigation')}
           >
             <X className="h-5 w-5" />
           </button>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageRuntime } from '@/components/common/LanguageRuntime';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CivicGuide AI - Legal and Civic Assistance",
-  description: "Understand your legal documents, identify missing evidence, and take the right actions.",
+  title: "NayaSathi - Civic Guidance",
+  description: "Understand civic information, identify evidence, and take the right actions.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <LanguageRuntime />
         {children}
       </body>
     </html>

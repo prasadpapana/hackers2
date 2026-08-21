@@ -13,6 +13,7 @@ interface AppStore {
 
   // Language
   language: SupportedLanguage;
+  hasSelectedLanguage: boolean;
   setLanguage: (lang: SupportedLanguage) => void;
 
   // Theme
@@ -67,6 +68,7 @@ const initialState = {
   isAuthenticated: false,
   authLoading: 'idle' as LoadingState,
   language: 'en' as const,
+  hasSelectedLanguage: false,
   theme: 'light' as const,
   documents: [],
   currentDocument: null,
@@ -94,7 +96,7 @@ export const useAppStore = create<AppStore>()(
       setAuthLoading: (authLoading) => set({ authLoading }),
 
       // Language
-      setLanguage: (language) => set({ language }),
+      setLanguage: (language) => set({ language, hasSelectedLanguage: true }),
 
       // Theme
       setTheme: (theme) => set({ theme }),
@@ -160,9 +162,22 @@ export const useAppStore = create<AppStore>()(
       name: 'civic-guide-store',
       partialize: (state) => ({
         language: state.language,
+        hasSelectedLanguage: state.hasSelectedLanguage,
         theme: state.theme,
         sidebarOpen: state.sidebarOpen,
       }),
+      // Older saved stores did not record whether the language came from an
+      // explicit user choice. Treat those values as a legacy default and begin
+      // in English; later selections remain persisted as normal.
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<AppStore>;
+        return {
+          ...currentState,
+          ...persisted,
+          language: persisted.hasSelectedLanguage ? persisted.language ?? 'en' : 'en',
+          hasSelectedLanguage: Boolean(persisted.hasSelectedLanguage),
+        };
+      },
     }
   )
 );

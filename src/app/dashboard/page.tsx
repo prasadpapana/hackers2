@@ -20,6 +20,7 @@ import { AlertCircle, CheckCircle2, Calendar, FileText, Plus } from 'lucide-reac
 import type { CivicCase } from '@/types';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import { useTranslations } from '@/lib/i18n';
 
 export default function DashboardPage() {
   const cases = useAppStore((state) => state.cases);
@@ -27,6 +28,7 @@ export default function DashboardPage() {
   const user = useAppStore((state) => state.user);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
     apiClient.getCases().then((response) => {
@@ -43,17 +45,17 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, {user?.name ?? 'there'}</h1>
-          <p className="text-muted-foreground">Manage your cases and documents in one place</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('welcomeBack')}, {user?.name ?? 'there'}</h1>
+          <p className="text-muted-foreground">{t('dashboardDescription')}</p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
-            { label: 'Active Cases', value: activeCases.length, icon: FileText, color: 'text-primary' },
-            { label: 'Action Required', value: actionRequired.length, icon: AlertCircle, color: 'text-amber-600' },
-            { label: 'Upcoming Deadlines', value: cases.filter((caseItem) => caseItem.deadline).length, icon: Calendar, color: 'text-amber-600' },
-            { label: 'Completed', value: completedCases.length, icon: CheckCircle2, color: 'text-green-600' },
+            { label: t('activeCases'), value: activeCases.length, icon: FileText, color: 'text-primary' },
+            { label: t('actionRequired'), value: actionRequired.length, icon: AlertCircle, color: 'text-amber-600' },
+            { label: t('upcomingDeadlines'), value: cases.filter((caseItem) => caseItem.deadline).length, icon: Calendar, color: 'text-amber-600' },
+            { label: t('completed'), value: completedCases.length, icon: CheckCircle2, color: 'text-green-600' },
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -77,15 +79,15 @@ export default function DashboardPage() {
           {/* Recent Cases */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-foreground">Recent Cases</h2>
+              <h2 className="text-2xl font-bold text-foreground">{t('recentCases')}</h2>
               <Link href="/cases">
                 <Button variant="ghost" size="sm">
-                  View All
+                  {t('viewAll')}
                 </Button>
               </Link>
             </div>
 
-            {loading ? <LoadingState message="Loading cases..." /> : error ? <ErrorState title="Dashboard unavailable" message="We could not load your dashboard data from the server." onRetry={() => window.location.reload()} /> : cases.length > 0 ? (
+            {loading ? <LoadingState message={t('loadingCases')} /> : error ? <ErrorState title={t('dashboardUnavailable')} message={t('dashboardDescription')} onRetry={() => window.location.reload()} /> : cases.length > 0 ? (
               <div className="space-y-4">
                 {cases.slice(0, 3).map((caseItem) => (
                   <Card key={caseItem.id} hoverable>
@@ -101,7 +103,7 @@ export default function DashboardPage() {
                       {/* Progress Bar */}
                       <div className="mb-4">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-muted-foreground">Progress</span>
+                          <span className="text-xs text-muted-foreground">{t('progress')}</span>
                           <span className="text-xs font-medium text-foreground">{caseItem.progress}%</span>
                         </div>
                         <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -115,12 +117,12 @@ export default function DashboardPage() {
                       {/* Next Action */}
                       <div className="flex items-center justify-between">
                         <div className="text-sm">
-                          <p className="text-xs text-muted-foreground mb-1">Next Action</p>
+                          <p className="text-xs text-muted-foreground mb-1">{t('nextAction')}</p>
                           <p className="text-foreground font-medium">{caseItem.nextAction}</p>
                         </div>
                         <Link href={`/cases/${caseItem.id}`}>
                           <Button variant="ghost" size="sm">
-                            Open
+                            {t('open')}
                           </Button>
                         </Link>
                       </div>
@@ -130,10 +132,10 @@ export default function DashboardPage() {
               </div>
             ) : (
               <EmptyState
-                title="No cases yet"
+                title={t('noCases')}
                 message="Create your first case by uploading a document"
                 action={{
-                  label: 'Upload Document',
+                  label: t('uploadDocument'),
                   onClick: () => window.location.href = '/analyze',
                 }}
               />
@@ -142,14 +144,14 @@ export default function DashboardPage() {
 
           {/* Quick Actions */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">Quick Actions</h2>
+            <h2 className="text-2xl font-bold text-foreground">{t('quickActions')}</h2>
 
             <Card>
               <CardContent className="pt-6">
                 <Link href="/analyze" className="block">
                   <Button variant="primary" size="lg" className="w-full">
                     <Plus className="w-5 h-5" />
-                    Analyze Document
+                    {t('analyzeDocument')}
                   </Button>
                 </Link>
               </CardContent>
@@ -157,7 +159,7 @@ export default function DashboardPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Getting Started</CardTitle>
+                <CardTitle className="text-base">{t('gettingStarted')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex gap-3">
@@ -165,8 +167,8 @@ export default function DashboardPage() {
                     1
                   </div>
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Upload a document</p>
-                    <p className="text-xs text-muted-foreground">Start by uploading a legal document</p>
+                    <p className="font-medium text-foreground">{t('stepUpload')}</p>
+                    <p className="text-xs text-muted-foreground">{t('dashboardUploadHint')}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
@@ -174,8 +176,8 @@ export default function DashboardPage() {
                     2
                   </div>
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Get instant analysis</p>
-                    <p className="text-xs text-muted-foreground">AI analyzes your document in seconds</p>
+                    <p className="font-medium text-foreground">{t('dashboardAnalysis')}</p>
+                    <p className="text-xs text-muted-foreground">{t('dashboardAnalysisHint')}</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
@@ -183,8 +185,8 @@ export default function DashboardPage() {
                     3
                   </div>
                   <div className="text-sm">
-                    <p className="font-medium text-foreground">Take action</p>
-                    <p className="text-xs text-muted-foreground">Follow recommendations and track progress</p>
+                    <p className="font-medium text-foreground">{t('stepAct')}</p>
+                    <p className="text-xs text-muted-foreground">{t('dashboardActionHint')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -192,14 +194,14 @@ export default function DashboardPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Need Help?</CardTitle>
+                <CardTitle className="text-base">{t('needHelp')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
                   Check out our documentation or contact support
                 </p>
                 <Button variant="outline" size="sm" className="w-full">
-                  Contact Support
+                  {t('contactSupport')}
                 </Button>
               </CardContent>
             </Card>

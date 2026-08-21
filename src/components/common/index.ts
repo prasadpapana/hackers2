@@ -20,5 +20,7 @@ export type { InputProps, TextareaProps, SelectProps } from './Forms';
 export { Modal, Alert, Toast } from './Modal';
 
 export { Navbar } from './Navbar';
+export { Brand } from './Brand';
+export { LanguageSelector } from './LanguageSelector';
 
 export { Sidebar, MobileNavigation } from './Sidebar';

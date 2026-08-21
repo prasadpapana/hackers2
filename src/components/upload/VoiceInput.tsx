@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Check, Mic, Square, X } from 'lucide-react';
 import { Button, Card, CardContent } from '@/components/common';
+import { useAppStore } from '@/lib/store';
+import { useTranslations } from '@/lib/i18n';
 
 type VoiceStatus = 'idle' | 'listening' | 'completed' | 'error';
 
@@ -40,6 +42,8 @@ type SpeechWindow = Window & {
 export function VoiceInput({ onSubmit }: VoiceInputProps) {
   const [status, setStatus] = useState<VoiceStatus>('idle');
   const [transcript, setTranscript] = useState('');
+  const language = useAppStore((state) => state.language);
+  const t = useTranslations();
   const supported = typeof window === 'undefined'
     ? true
     : Boolean((window as SpeechWindow).SpeechRecognition ?? (window as SpeechWindow).webkitSpeechRecognition);
@@ -51,7 +55,7 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
     if (!Recognition) return;
 
     const recognition = new Recognition();
-    recognition.lang = 'en-IN';
+    recognition.lang = language === 'en' ? 'en-IN' : language;
     recognition.continuous = true;
     recognition.interimResults = false;
     recognition.onresult = (event) => {
@@ -71,7 +75,7 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
       recognition.stop();
       recognitionRef.current = null;
     };
-  }, []);
+  }, [language]);
 
   const startListening = () => {
     if (!recognitionRef.current) return;
@@ -96,9 +100,9 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
       <CardContent className="pt-6 space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="font-semibold text-foreground">Ask by voice</h2>
+            <h2 className="font-semibold text-foreground">{t('voiceTitle')}</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Describe your question about a civic or legal document.
+              {t('voiceDescription')}
             </p>
           </div>
           {status !== 'idle' && (
@@ -106,7 +110,7 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
               type="button"
               onClick={reset}
               className="text-muted-foreground hover:text-foreground"
-              aria-label="Clear voice input"
+              aria-label={t('clearVoiceInput')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -115,14 +119,14 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
 
         {!supported ? (
           <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
-            Voice input is not supported in this browser. You can still upload a document above.
+            {t('voiceUnsupported')}
           </p>
         ) : (
           <>
             <div className="min-h-20 rounded-lg border border-border bg-muted/30 p-4 text-sm text-foreground">
               {transcript || (
                 <span className="text-muted-foreground">
-                  Your transcript will appear here.
+                  {t('transcriptPlaceholder')}
                 </span>
               )}
             </div>
@@ -131,23 +135,23 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
               {status === 'listening' ? (
                 <Button variant="destructive" onClick={stopListening}>
                   <Square className="w-4 h-4" />
-                  Stop listening
+                  {t('stopListening')}
                 </Button>
               ) : (
                 <Button variant="outline" onClick={startListening}>
                   <Mic className="w-4 h-4" />
-                  {status === 'error' ? 'Try again' : 'Start speaking'}
+                  {status === 'error' ? t('tryAgain') : t('startSpeaking')}
                 </Button>
               )}
               {status === 'listening' && (
                 <span className="text-sm text-destructive" role="status">
-                  Listening...
+                  {t('listening')}
                 </span>
               )}
               {status === 'completed' && transcript && (
                 <Button variant="primary" onClick={() => onSubmit?.(transcript)}>
                   <Check className="w-4 h-4" />
-                  Use question
+                  {t('useQuestion')}
                 </Button>
               )}
             </div>

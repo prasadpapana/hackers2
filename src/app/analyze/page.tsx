@@ -15,6 +15,8 @@ import { Upload, File, FileText, X } from 'lucide-react';
 import { VoiceInput } from '@/components/upload/VoiceInput';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import { useTranslations } from '@/lib/i18n';
+import { aiDisclaimer } from '@/components/common/LegalPage';
 
 export default function AnalyzePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -23,6 +25,7 @@ export default function AnalyzePage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const setCurrentDocument = useAppStore((state) => state.setCurrentDocument);
   const setCurrentAnalysis = useAppStore((state) => state.setCurrentAnalysis);
+  const t = useTranslations();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -94,10 +97,9 @@ export default function AnalyzePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Analyze a Document</h1>
-          <p className="text-muted-foreground">
-            Upload a notice, letter, application, or other document to understand what it means and what you should do next.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('analyzeTitle')}</h1>
+          <p className="text-muted-foreground">{t('analyzeDescription')}</p>
+          <p className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm leading-6 text-muted-foreground">{aiDisclaimer}</p>
         </div>
 
         <div className="mb-8">
@@ -114,10 +116,8 @@ export default function AnalyzePage() {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Document Uploaded Successfully!</h3>
-              <p className="text-muted-foreground mb-6">
-                Analyzing your document. You&apos;ll be redirected to results shortly...
-              </p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">{t('uploadSuccess')}</h3>
+              <p className="text-muted-foreground mb-6">{t('analyzingRedirect')}</p>
               <LoadingState />
             </CardContent>
           </Card>
@@ -130,10 +130,8 @@ export default function AnalyzePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Upload Failed</h3>
-                <p className="text-muted-foreground mb-6">
-                  There was an error uploading your document. Please try again.
-                </p>
+                <h3 className="text-lg font-semibold text-foreground mb-2">{t('uploadFailed')}</h3>
+                <p className="text-muted-foreground mb-6">{t('uploadError')}</p>
                 <Button
                   variant="primary"
                   onClick={() => {
@@ -180,7 +178,7 @@ export default function AnalyzePage() {
                     <Upload className="w-12 h-12 text-primary mx-auto mb-4 opacity-50" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Drag and drop your document here
+                    {t('dragDrop')}
                   </h3>
                   <p className="text-muted-foreground mb-6">or</p>
 
@@ -198,7 +196,7 @@ export default function AnalyzePage() {
                       }}
                       className="px-6 py-2 text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors font-medium"
                     >
-                      Browse Files
+                      {t('browseFiles')}
                     </button>
                   </label>
 
@@ -236,7 +234,7 @@ export default function AnalyzePage() {
                   </div>
 
                   <Button variant="primary" size="lg" className="w-full" onClick={handleUpload}>
-                    Upload & Analyze
+                    {t('uploadAnalyze')}
                   </Button>
                 </div>
               )}
@@ -246,7 +244,7 @@ export default function AnalyzePage() {
             <div className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">What we analyze</CardTitle>
+                  <CardTitle className="text-base">{t('whatWeAnalyze')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {[
@@ -268,7 +266,7 @@ export default function AnalyzePage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Supported formats</CardTitle>
+                  <CardTitle className="text-base">{t('supportedFormats')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm text-foreground">

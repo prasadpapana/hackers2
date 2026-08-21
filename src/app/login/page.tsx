@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common';
-import { Briefcase } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import { Brand } from '@/components/common/Brand';
+import { useTranslations } from '@/lib/i18n';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const t = useTranslations();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ export default function LoginPage() {
       setUser(user);
       router.push('/dashboard');
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError(t('invalidCredentials'));
     } finally {
       setIsLoading(false);
     }
@@ -45,13 +47,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Briefcase className="w-6 h-6 text-primary" />
-            <span className="text-xl font-semibold text-primary">CivicGuide AI</span>
-          </div>
-          <CardTitle className="text-center">Welcome Back</CardTitle>
+          <div className="flex items-center justify-center mb-4"><Brand /></div>
+          <CardTitle className="text-center">{t('welcomeBack')}</CardTitle>
           <CardDescription className="text-center">
-            Sign in to access your cases and documents
+            {t('signInDescription')}
           </CardDescription>
         </CardHeader>
 
@@ -64,7 +63,7 @@ export default function LoginPage() {
             )}
 
             <Input
-              label="Email"
+              label={t('email')}
               type="email"
               placeholder="you@example.com"
               value={email}
@@ -73,7 +72,7 @@ export default function LoginPage() {
             />
 
             <Input
-              label="Password"
+              label={t('password')}
               type="password"
               placeholder="••••••••"
               value={password}
@@ -89,21 +88,25 @@ export default function LoginPage() {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="w-4 h-4 border border-border rounded"
                 />
-                <span className="text-foreground">Remember me</span>
+                <span className="text-foreground">{t('rememberMe')}</span>
               </label>
               <Link href="#" className="text-sm text-primary hover:underline">
-                Forgot password?
+                {t('forgotPassword')}
               </Link>
             </div>
 
             <Button variant="primary" size="lg" className="w-full" isLoading={isLoading}>
-              Sign In
+              {t('signIn')}
             </Button>
 
+            <p className="text-center text-xs leading-5 text-muted-foreground">
+              By continuing, you agree to our <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and acknowledge our <Link href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+            </p>
+
             <p className="text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{' '}
+              {t('noAccount')}{' '}
               <Link href="/signup" className="text-primary hover:underline font-medium">
-                Sign up
+                {t('signUp')}
               </Link>
             </p>
           </form>

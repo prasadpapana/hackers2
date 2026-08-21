@@ -16,10 +16,12 @@ import {
 import { FileText, Download, Trash2, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import type { Document } from '@/types';
+import { useTranslations } from '@/lib/i18n';
 
 type DocumentPreview = Pick<Document, 'id' | 'fileName' | 'fileUrl' | 'uploadedAt' | 'status'> & { type?: string };
 
 export default function DocumentsPage() {
+  const t = useTranslations();
   const [searchQuery, setSearchQuery] = useState('');
   const [documents, setDocuments] = useState<DocumentPreview[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,8 +42,8 @@ export default function DocumentsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Documents</h1>
-          <p className="text-muted-foreground">Manage all your uploaded documents</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('documents')}</h1>
+          <p className="text-muted-foreground">{t('documentsDescription')}</p>
         </div>
 
         {/* Search */}
@@ -49,7 +51,8 @@ export default function DocumentsPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search documents..."
+            placeholder={t('searchDocuments')}
+            aria-label={t('searchDocuments')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground"
@@ -57,7 +60,7 @@ export default function DocumentsPage() {
         </div>
 
         {/* Documents List */}
-        {loading ? <LoadingState message="Loading documents..." /> : error ? <ErrorState title="Documents unavailable" message="We could not load your documents from the server." onRetry={() => window.location.reload()} /> : visibleDocuments.length > 0 ? (
+        {loading ? <LoadingState message={t('loadingDocuments')} /> : error ? <ErrorState title={t('documentsUnavailable')} message={t('documentsLoadError')} onRetry={() => window.location.reload()} /> : visibleDocuments.length > 0 ? (
           <div className="space-y-4">
             {visibleDocuments.map((doc) => (
               <Card key={doc.id} hoverable>
@@ -68,7 +71,7 @@ export default function DocumentsPage() {
                       <div>
                         <h3 className="font-semibold text-foreground">{doc.fileName}</h3>
                         <p className="text-xs text-muted-foreground">
-                          {doc.type ?? 'Document'} • Uploaded {doc.uploadedAt}
+                          {doc.type ?? t('document')} • {t('uploaded')} {doc.uploadedAt}
                         </p>
                       </div>
                     </div>
@@ -101,10 +104,10 @@ export default function DocumentsPage() {
           </div>
         ) : (
           <EmptyState
-            title="No documents"
-            message="Start by uploading a document"
+            title={t('noDocuments')}
+            message={t('startUploading')}
             action={{
-              label: 'Upload Document',
+              label: t('uploadDocument'),
               onClick: () => (window.location.href = '/analyze'),
             }}
           />
