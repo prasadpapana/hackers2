@@ -14,6 +14,7 @@ import {
   LoadingState,
   Input,
 } from '@/components/common';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Search, Calendar } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
@@ -70,22 +71,26 @@ export default function CasesPage() {
           </div>
 
           {/* Filter */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <ToggleGroup
+            value={[filterStatus]}
+            onValueChange={(value) => value[0] && setFilterStatus(value[0] as typeof filterStatus)}
+            variant="outline"
+            size="sm"
+            className="flex gap-2 overflow-x-auto pb-2"
+            aria-label={t('status')}
+          >
             {[
               { value: 'all', label: t('all') }, { value: 'active', label: t('active') }, { value: 'action_required', label: t('actionRequired') }, { value: 'pending', label: t('pending') }, { value: 'completed', label: t('completed') },
             ].map((filter) => (
-              <Button
+              <ToggleGroupItem
                 key={filter.value}
-                type="button"
-                variant={filterStatus === filter.value ? 'primary' : 'outline'}
-                onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
-                aria-pressed={filterStatus === filter.value}
+                value={filter.value}
                 className="whitespace-nowrap"
               >
                 {filter.label}
-              </Button>
+              </ToggleGroupItem>
             ))}
-          </div>
+          </ToggleGroup>
         </div>
 
         {/* Cases Grid */}
