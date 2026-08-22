@@ -469,3 +469,52 @@ html:not([data-theme]) {
   --sidebar-border: 208 41% 20%;
   --sidebar-ring: 198 93% 60%;
 }
+
+/* Landing page theme: keep the public experience dark regardless of the app theme. */
+.landing-page {
+  --background: 210 50% 4%;
+  --foreground: 210 40% 98%;
+  --card: 210 43% 9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 210 43% 9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 198 93% 60%;
+  --primary-foreground: 210 50% 4%;
+  --secondary: 199 89% 48%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 210 43% 11%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 198 93% 74%;
+  --accent-foreground: 210 50% 4%;
+  --border: 208 41% 20%;
+  --input: 208 41% 20%;
+  --ring: 198 93% 60%;
+  --landing-surface: 210 50% 4%;
+  --landing-surface-raised: 207 59% 7%;
+  --landing-foreground: 210 40% 98%;
+  --landing-muted: 215 20% 65%;
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.landing-page [class*="bg-[#071018]"],
+.landing-page [class*="bg-[#0a1720]"],
+.landing-page [class*="bg-[#050c12]"] { background-color: hsl(var(--landing-surface-raised)) !important; }
+.landing-page [class*="bg-[#0d1b24]"],
+.landing-page [class*="bg-[#12232d]"] { background-color: hsl(var(--card)) !important; }
+.landing-page [class*="bg-[#d5f56f]"] { background-color: hsl(var(--primary)) !important; }
+.landing-page [class*="text-[#d5f56f]"] { color: hsl(var(--primary)) !important; }
+.landing-page [class*="text-[#071018]"] { color: hsl(var(--primary-foreground)) !important; }
+.landing-page [class*="text-white"],
+.landing-page h1, .landing-page h2, .landing-page h3 { color: hsl(var(--foreground)) !important; }
+.landing-page h1 span { color: hsl(var(--primary)) !important; }
+.landing-page [class*="text-[#aebbb8]"],
+.landing-page [class*="text-[#91a09c]"],
+.landing-page [class*="text-[#9eaba9]"],
+.landing-page [class*="text-[#cbd6d3]"] { color: hsl(214 32% 84%) !important; }
+.landing-page [class*="text-[#71817d]"],
+.landing-page [class*="text-[#7e8d8a]"],
+.landing-page [class*="text-[#6f807b]"],
+.landing-page [class*="text-[#61716d]"] { color: hsl(var(--muted-foreground)) !important; }
+.landing-page [class*="border-white"] { border-color: hsl(var(--border)) !important; }
+.landing-page [class*="bg-white"] { background-color: hsl(var(--foreground) / .05) !important; }
