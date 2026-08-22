@@ -518,6 +518,12 @@ html:not([data-theme]) {
 .landing-page [class*="text-[#61716d]"] { color: hsl(var(--muted-foreground)) !important; }
 .landing-page [class*="border-white"] { border-color: hsl(var(--border)) !important; }
 .landing-page [class*="bg-white"] { background-color: hsl(var(--foreground) / .05) !important; }
+.landing-page .landing-steps > div > div:first-child {
+  border-color: hsl(var(--primary) / .55) !important;
+  background-color: hsl(var(--primary) / .12) !important;
+  color: hsl(var(--primary)) !important;
+  opacity: 1 !important;
+}
 
 /* Editorial landing treatment inspired by the supplied dark reference. */
 .landing-page {

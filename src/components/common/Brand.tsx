@@ -20,6 +20,10 @@ export function Brand({ href = '/', compact = false, inverted = false }: BrandPr
         priority
         className="brand-logo"
       />
+      <span className="brand-title">
+        <span className="brand-title-nyayg">NYAYG</span>
+        <span className="brand-title-sathi">SATHI</span>
+      </span>
     </span>
   );
 
