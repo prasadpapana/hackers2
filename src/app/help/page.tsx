@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, Button } from '@/components/common';
-import { ChevronDown, Mail, MessageSquare } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Mail, MessageSquare } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
 
 export default function HelpPage() {
   const t = useTranslations();
-  const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
 
   const faqs = [
     {
@@ -69,29 +68,22 @@ export default function HelpPage() {
         {/* FAQ */}
         <div>
           <h2 className="text-2xl font-bold text-foreground mb-6">{t('faq')}</h2>
-          <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <Card
-                key={idx}
-                className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-              >
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-foreground">{faq.question}</p>
-                    <ChevronDown
-                      className={`w-5 h-5 text-muted-foreground transition-transform ${
-                        expandedFaq === idx ? 'transform rotate-180' : ''
-                      }`}
-                    />
-                  </div>
-                  {expandedFaq === idx && (
-                    <p className="text-sm text-muted-foreground mt-4">{faq.answer}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card>
+            <CardContent className="pt-6">
+              <Accordion className="space-y-3">
+                {faqs.map((faq, idx) => (
+                  <AccordionItem key={idx} value={`faq-${idx}`} className="rounded-lg border border-border px-4">
+                    <AccordionTrigger className="py-4 no-underline hover:no-underline">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Documentation */}

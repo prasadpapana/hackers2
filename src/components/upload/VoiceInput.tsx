@@ -106,14 +106,15 @@ export function VoiceInput({ onSubmit }: VoiceInputProps) {
             </p>
           </div>
           {status !== 'idle' && (
-            <button
+            <Button
               type="button"
               onClick={reset}
-              className="text-muted-foreground hover:text-foreground"
+              variant="ghost"
+              size="icon"
               aria-label={t('clearVoiceInput')}
             >
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           )}
         </div>
 
