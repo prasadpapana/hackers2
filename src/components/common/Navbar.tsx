@@ -11,6 +11,13 @@ import { apiClient } from '@/lib/api';
 import { LanguageSelector } from './LanguageSelector';
 import { ThemeSelector } from './ThemeSelector';
 import { Button } from './Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export function Navbar() {
   const { user, language, sidebarOpen, setSidebarOpen } = useAppStore();
@@ -76,28 +83,28 @@ export function Navbar() {
 
           {/* User Menu */}
           {user && (
-            <div className="relative group">
-              <Button type="button" variant="ghost" className="h-auto p-2">
-                <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button type="button" variant="ghost" className="h-auto p-2" />}>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20">
                   <span className="text-sm font-medium text-primary">{user.name.charAt(0).toUpperCase()}</span>
                 </div>
-                <span className="text-sm font-medium hidden sm:inline">{user.name}</span>
-              </Button>
-              <div className="absolute right-0 mt-2 w-40 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <div className="border-b border-border p-2"><ThemeSelector /></div>
-                <Link
-                  href="/settings"
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted first:rounded-t-lg"
-                >
-                  <Settings className="w-4 h-4" />
+                <span className="hidden text-sm font-medium sm:inline">{user.name}</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onSelect={(event) => event.preventDefault()} className="p-2">
+                  <ThemeSelector />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem render={<Link href="/settings" />}>
+                  <Settings className="h-4 w-4" />
                   {t('settings')}
-                </Link>
-                <Button type="button" variant="ghost" size="sm" onClick={handleLogout} className="h-auto w-full justify-start gap-2 rounded-none px-4 py-2 font-normal text-foreground hover:bg-muted">
-                  <LogOut className="w-4 h-4" />
+                </DropdownMenuItem>
+                <DropdownMenuItem variant="destructive" onSelect={handleLogout}>
+                  <LogOut className="h-4 w-4" />
                   {t('logout')}
-                </Button>
-              </div>
-            </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </div>
