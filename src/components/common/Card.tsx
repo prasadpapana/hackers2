@@ -1,6 +1,14 @@
 'use client';
 
 import React from 'react';
+import {
+  Card as ShadcnCard,
+  CardHeader as ShadcnCardHeader,
+  CardTitle as ShadcnCardTitle,
+  CardDescription as ShadcnCardDescription,
+  CardContent as ShadcnCardContent,
+  CardFooter as ShadcnCardFooter,
+} from '@/components/ui/card';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hoverable?: boolean;
@@ -8,11 +16,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, hoverable, ...props }, ref) => (
-    <div
+    <ShadcnCard
       ref={ref}
-      className={`rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm transition-[border-color,box-shadow] ${
-        hoverable ? 'hover:shadow-md hover:border-primary/20 cursor-pointer' : ''
-      } ${className || ''}`}
+      className={`${hoverable ? 'cursor-pointer transition-[border-color,box-shadow] hover:border-primary/20 hover:shadow-md' : ''} ${className || ''}`}
       {...props}
     />
   )
@@ -20,34 +26,34 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
-  <div ref={ref} className={`mb-4 border-b border-border pb-4 ${className || ''}`} {...props} />
+  <ShadcnCardHeader ref={ref} className={`border-b border-border ${className || ''}`} {...props} />
 ));
 CardHeader.displayName = 'CardHeader';
 
 const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <h2 ref={ref} className={`text-xl font-semibold leading-tight text-card-foreground ${className || ''}`} {...props} />
+    <ShadcnCardTitle ref={ref} className={`text-xl ${className || ''}`} {...props} />
   )
 );
 CardTitle.displayName = 'CardTitle';
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={`text-sm text-muted-foreground ${className || ''}`} {...props} />
+    <ShadcnCardDescription ref={ref} className={className} {...props} />
   )
 );
 CardDescription.displayName = 'CardDescription';
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={`${className || ''}`} {...props} />
+    <ShadcnCardContent ref={ref} className={className} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={`mt-6 border-t border-border pt-4 flex gap-2 ${className || ''}`} {...props} />
+    <ShadcnCardFooter ref={ref} className={`border-border ${className || ''}`} {...props} />
   )
 );
 CardFooter.displayName = 'CardFooter';

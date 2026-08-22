@@ -56,7 +56,7 @@ export default function LandingPage() {
   const navItems = [['navFeatures', 'features'], ['navHowItWorks', 'how-it-works'], ['navBenefits', 'benefits'], ['userReviews', 'reviews'], ['navAbout', 'about']];
 
   return (
-    <main className="landing-page min-h-screen overflow-hidden bg-[#071018] text-[#f4f7f5]">
+    <main className="landing-page min-h-screen overflow-hidden bg-background text-foreground">
       <nav className="landing-nav fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#071018]/80 backdrop-blur-xl">
         <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
           <Link href="/" className="flex items-center gap-3" onClick={closeMenu}>

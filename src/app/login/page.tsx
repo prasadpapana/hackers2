@@ -8,6 +8,7 @@ import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { Brand } from '@/components/common/Brand';
 import { useTranslations } from '@/lib/i18n';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -82,13 +83,12 @@ export default function LoginPage() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
+                <Checkbox
+                  id="remember-me"
                   checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 border border-border rounded"
+                  onCheckedChange={(checked) => setRememberMe(checked === true)}
                 />
-                <span className="text-foreground">{t('rememberMe')}</span>
+                <label htmlFor="remember-me" className="text-foreground">{t('rememberMe')}</label>
               </label>
               <Link href="#" className="text-sm text-primary hover:underline">
                 {t('forgotPassword')}

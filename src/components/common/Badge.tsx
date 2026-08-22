@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useTranslations } from '@/lib/i18n';
+import { Badge as ShadcnBadge } from '@/components/ui/badge';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -23,10 +24,11 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(({ className, variant
   };
 
   return (
-    <div
+    <ShadcnBadge
       role="status"
       ref={ref}
-      className={`inline-flex items-center font-medium ${variantClasses[variant]} ${sizeClasses[size]} ${className || ''}`}
+      variant={variant === 'error' ? 'destructive' : variant === 'default' || variant === 'info' ? 'default' : 'secondary'}
+      className={`${variantClasses[variant]} ${sizeClasses[size]} ${className || ''}`}
       {...props}
     />
   );

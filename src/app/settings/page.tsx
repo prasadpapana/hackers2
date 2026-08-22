@@ -17,6 +17,7 @@ import { Bell, Lock, Globe, User } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { indianLanguages, type SupportedLanguage, useTranslations } from '@/lib/i18n';
+import { Switch } from '@/components/ui/switch';
 
 export default function SettingsPage() {
   const storeLanguage = useAppStore((state) => state.language);
@@ -145,16 +146,14 @@ export default function SettingsPage() {
                   <p className="font-medium text-foreground">{setting.label}</p>
                   <p className="text-sm text-muted-foreground">{setting.description}</p>
                 </div>
-                <input
-                  type="checkbox"
+                <Switch
                   checked={notifications[setting.key as keyof typeof notifications]}
-                  onChange={(e) =>
+                  onCheckedChange={(checked) =>
                     setNotifications({
                       ...notifications,
-                      [setting.key]: e.target.checked,
+                      [setting.key]: checked,
                     })
                   }
-                  className="w-5 h-5 border border-border rounded cursor-pointer"
                 />
               </div>
             ))}

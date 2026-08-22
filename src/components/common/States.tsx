@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AlertCircle, CheckCircle, Inbox, LoaderCircle } from 'lucide-react';
+import { Button } from './Button';
 
 interface LoadingStateProps {
   message?: string;
@@ -42,12 +43,12 @@ export function ErrorState({ title = 'Something went wrong', message = 'Please t
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
       </div>
       {onRetry && (
-        <button
+        <Button
           onClick={onRetry}
-          className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          variant="outline"
         >
           Try Again
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -77,12 +78,11 @@ export function EmptyState({
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
       </div>
       {action && (
-        <button
+        <Button
           onClick={action.onClick}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {action.label}
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -103,12 +103,12 @@ export function SuccessState({ title = 'Success!', message = 'Operation complete
         <p className="text-sm text-muted-foreground mb-4">{message}</p>
       </div>
       {onClose && (
-        <button
+        <Button
           onClick={onClose}
-          className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          variant="outline"
         >
           Close
-        </button>
+        </Button>
       )}
     </div>
   );

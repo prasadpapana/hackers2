@@ -8,6 +8,7 @@ import { apiClient } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { Brand } from '@/components/common/Brand';
 import { useTranslations } from '@/lib/i18n';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -115,8 +116,8 @@ export default function SignupPage() {
             />
 
             <div className="flex items-start gap-2 text-xs text-muted-foreground">
-              <input type="checkbox" className="w-4 h-4 border border-border rounded mt-0.5" required />
-              <span>{t('agreeTerms')}</span>
+              <Checkbox id="agree-terms" className="mt-0.5" required />
+              <label htmlFor="agree-terms">{t('agreeTerms')}</label>
             </div>
 
             <Button variant="primary" size="lg" className="w-full" isLoading={isLoading}>

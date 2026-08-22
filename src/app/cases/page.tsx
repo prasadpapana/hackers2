@@ -12,6 +12,7 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
+  Input,
 } from '@/components/common';
 import { Search, Calendar } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -58,13 +59,13 @@ export default function CasesPage() {
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
+            <Input
               type="text"
               placeholder={t('searchCases')}
               aria-label={t('searchCases')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              className="h-10 pl-10"
             />
           </div>
 
@@ -73,17 +74,16 @@ export default function CasesPage() {
             {[
               { value: 'all', label: t('all') }, { value: 'active', label: t('active') }, { value: 'action_required', label: t('actionRequired') }, { value: 'pending', label: t('pending') }, { value: 'completed', label: t('completed') },
             ].map((filter) => (
-              <button
+              <Button
                 key={filter.value}
+                type="button"
+                variant={filterStatus === filter.value ? 'primary' : 'outline'}
                 onClick={() => setFilterStatus(filter.value as typeof filterStatus)}
-                className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                  filterStatus === filter.value
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-foreground hover:bg-muted/80'
-                }`}
+                aria-pressed={filterStatus === filter.value}
+                className="whitespace-nowrap"
               >
                 {filter.label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

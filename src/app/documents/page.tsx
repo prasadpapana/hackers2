@@ -10,6 +10,7 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
+  Input,
 } from '@/components/common';
 import { FileText, Download, Trash2, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
@@ -48,13 +49,13 @@ export default function DocumentsPage() {
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-          <input
+          <Input
             type="text"
             placeholder={t('searchDocuments')}
             aria-label={t('searchDocuments')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground"
+            className="h-10 pl-10"
           />
         </div>
 

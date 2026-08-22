@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Home, LayoutDashboard, FileText, UploadCloud, FolderOpen, Calendar, Settings, HelpCircle, Star, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslations } from '@/lib/i18n';
+import { Button } from './Button';
 
 const mainNavItems = [
   { href: '/', label: 'Home', icon: Home },
@@ -44,14 +45,15 @@ export function Sidebar() {
       <aside className="fixed left-0 top-16 z-30 h-[calc(100dvh-4rem)] w-64 max-w-[85vw] overflow-y-auto border-r border-sidebar-border bg-sidebar transition-transform duration-200 md:translate-x-0">
       <nav className="flex h-full flex-col p-3 sm:p-4">
         <div className="mb-3 flex justify-end md:hidden">
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             type="button"
             onClick={() => useAppStore.getState().setSidebarOpen(false)}
-            className="rounded-lg p-2 text-sidebar-foreground hover:bg-sidebar/80"
             aria-label={t('closeNavigation')}
           >
             <X className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
         {/* Main Navigation */}
         <div className="flex-1 space-y-1">

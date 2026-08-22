@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
   LoadingState,
+  Progress,
 } from '@/components/common';
 import { Upload, File, FileText, X } from 'lucide-react';
 import { VoiceInput } from '@/components/upload/VoiceInput';
@@ -152,12 +153,7 @@ export default function AnalyzePage() {
                   <p className="text-sm text-muted-foreground mb-2">
                     {uploadStatus === 'uploading' ? t('uploading') : t('analyzingDocument')}
                   </p>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-primary rounded-full transition-all duration-300"
-                      style={{ width: `${uploadProgress}%` }}
-                    ></div>
-                  </div>
+                  <Progress value={uploadProgress} className="w-full" />
                   <p className="text-xs text-muted-foreground mt-2 text-right">{uploadProgress}%</p>
                 </div>
               </div>
@@ -188,15 +184,15 @@ export default function AnalyzePage() {
                       onChange={handleFileSelect}
                       className="hidden"
                     />
-                    <button
+                    <Button
                       type="button"
+                      variant="outline"
                       onClick={(e) => {
                         (e.target as HTMLElement).previousElementSibling?.dispatchEvent(new MouseEvent('click'));
                       }}
-                      className="px-6 py-2 text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors font-medium"
                     >
                       {t('browseFiles')}
-                    </button>
+                    </Button>
                   </label>
 
                   <p className="text-xs text-muted-foreground mt-4">
@@ -223,13 +219,15 @@ export default function AnalyzePage() {
                       <p className="font-medium text-foreground truncate">{file.name}</p>
                       <p className="text-sm text-muted-foreground">{formatFileSize(file.size)}</p>
                     </div>
-                    <button
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
                       onClick={() => setFile(null)}
-                      className="text-muted-foreground hover:text-foreground p-1"
                       aria-label={t('removeFile')}
                     >
                       <X className="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
 
                   <Button variant="primary" size="lg" className="w-full" onClick={handleUpload}>

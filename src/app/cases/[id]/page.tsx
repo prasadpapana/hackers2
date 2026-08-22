@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { DashboardLayout } from '@/components/DashboardLayout';
-import { Button, Card, CardContent, CardHeader, CardTitle, ErrorState, LoadingState, StatusBadge } from '@/components/common';
+import { Button, Card, CardContent, CardHeader, CardTitle, ErrorState, LoadingState, Progress, StatusBadge } from '@/components/common';
 import { ArrowLeft, Calendar, CheckCircle2, FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api';
@@ -47,9 +47,7 @@ export default function CaseDetailsPage({ params }: { params: { id: string } }) 
                 <CardHeader><CardTitle className="text-base">{t('progress')}</CardTitle></CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-foreground">{caseData.progress}%</p>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden mt-3">
-                    <div className="h-full bg-primary rounded-full" style={{ width: `${caseData.progress}%` }} />
-                  </div>
+                  <Progress value={caseData.progress} className="mt-3" />
                 </CardContent>
               </Card>
               <Card>

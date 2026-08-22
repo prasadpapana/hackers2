@@ -1,15 +1,25 @@
 'use client';
 
 import React from 'react';
+import { Input as ShadcnInput } from '@/components/ui/input';
+import { Textarea as ShadcnTextarea } from '@/components/ui/textarea';
+import { Label as ShadcnLabel } from '@/components/ui/label';
+import {
+  Select as ShadcnSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   required?: boolean;
 }
 
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(({ className, required, children, ...props }, ref) => (
-  <label ref={ref} className={`text-sm font-medium leading-none text-foreground ${className || ''}`} {...props}>
+  <ShadcnLabel ref={ref} className={className} {...props}>
     {children}{required && <span className="ml-1 text-destructive" aria-hidden="true">*</span>}
-  </label>
+  </ShadcnLabel>
 ));
 Label.displayName = 'Label';
 
@@ -23,11 +33,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
       {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
-      <input
+      <ShadcnInput
         ref={ref}
-        className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
+        className={`min-h-10 text-foreground ${
           error ? 'border-destructive focus:ring-destructive' : ''
         } ${className || ''}`}
+        aria-invalid={error ? true : undefined}
         {...props}
       />
       {error && <p className="text-xs text-destructive mt-1">{error}</p>}
@@ -47,11 +58,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, hint, ...props }, ref) => (
     <div className="w-full">
       {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
-      <textarea
+      <ShadcnTextarea
         ref={ref}
-        className={`min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all resize-y ${
+        className={`min-h-24 text-foreground ${
           error ? 'border-destructive focus:ring-destructive' : ''
         } ${className || ''}`}
+        aria-invalid={error ? true : undefined}
         {...props}
       />
       {error && <p className="text-xs text-destructive mt-1">{error}</p>}
@@ -69,26 +81,30 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, error, hint, options = [], ...props }, ref) => (
-    <div className="w-full">
+  ({ className, label, error, hint, options = [], value, defaultValue, onChange, ...props }, ref) => {
+    void ref;
+    return <div className="w-full">
       {label && <Label htmlFor={props.id} required={props.required} className="mb-2 block">{label}</Label>}
-      <select
-        ref={ref}
-        className={`min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all ${
-          error ? 'border-destructive focus:ring-destructive' : ''
-        } ${className || ''}`}
+      <ShadcnSelect
+        value={value as string | undefined}
+        defaultValue={defaultValue as string | undefined}
+        onValueChange={(nextValue) => onChange?.({ target: { value: nextValue } } as React.ChangeEvent<HTMLSelectElement>)}
         {...props}
       >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <SelectTrigger id={props.id} aria-invalid={error ? true : undefined} className={`min-h-10 w-full text-foreground ${
+          error ? 'border-destructive focus:ring-destructive' : ''
+        } ${className || ''}`}
+        >
+          <SelectValue placeholder={options[0]?.label} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
+        </SelectContent>
+      </ShadcnSelect>
       {error && <p className="text-xs text-destructive mt-1">{error}</p>}
       {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
-    </div>
-  )
+    </div>;
+  }
 );
 Select.displayName = 'Select';
 
